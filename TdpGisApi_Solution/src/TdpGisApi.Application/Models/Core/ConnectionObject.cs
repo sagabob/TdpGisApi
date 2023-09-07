@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using TdpGisApi.Core;
 
-namespace TdpGisApi.Application.Models;
+namespace TdpGisApi.Application.Models.Core;
 
-public class ConnectionObject: IEntity
+public class ConnectionObject : IEntity
 {
     [Key]
     public Guid Id { get; set; }
@@ -14,10 +14,4 @@ public class ConnectionObject: IEntity
     public required List<string> Collections { get; set; }
 
     public ConnectionType ConnectionType { get; set; }
-}
-
-public enum ConnectionType
-{
-    AzureRbac,
-    ConnectionString
 }
