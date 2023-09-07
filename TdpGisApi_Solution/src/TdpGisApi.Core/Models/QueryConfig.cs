@@ -2,7 +2,7 @@
 
 namespace TdpGisApi.Core.Models;
 
-public class QueryConfig
+public class QueryConfig: IEntity
 {
     [Key] public Guid Id { get; set; }
 
@@ -16,7 +16,7 @@ public class QueryConfig
 
     public required List<PropertyOutput> Mappings { get; set; }
 
-    public required string ConnectionName { get; set; }
+    public Guid ConnectionId { get; set; }
 
     public GeometryType GeometryType { get; set; }
 }
