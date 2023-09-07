@@ -5,7 +5,7 @@ using Microsoft.Azure.Cosmos.Linq;
 
 namespace TdpGisApi.Application.Services.Core;
 
-public partial class CosmosdbServices : ICosmosRepository
+public partial class CosmosdbRepository : ICosmosRepository
 {
     private static readonly CosmosLinqSerializerOptions CosmosLinqSerializerOptions =
         new() { PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase };
@@ -15,7 +15,7 @@ public partial class CosmosdbServices : ICosmosRepository
     private readonly string _databaseId;
     private Container _cosmosContainer = null!;
 
-    public CosmosdbServices(CosmosClient cosmosClient, string databaseId, string collectionName
+    public CosmosdbRepository(CosmosClient cosmosClient, string databaseId, string collectionName
     )
     {
         _cosmosClient = cosmosClient;
