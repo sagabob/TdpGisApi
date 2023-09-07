@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TdpGisApi.Core;
 
-namespace TdpGisApi.Core.Models;
+namespace TdpGisApi.Application.Models;
 
 public class ConnectionObject: IEntity
 {
