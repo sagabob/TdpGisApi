@@ -1,6 +1,6 @@
-﻿using TdpGisApi.Application.Services.Core;
+﻿using TdpGisApi.Repository.CosmosDb.Repos;
 
-namespace TdpGisApi.Application.Services;
+namespace TdpGisApi.Repository.CosmosDb;
 
 public interface ICosmosRepository
 {

@@ -1,4 +1,4 @@
-﻿namespace TdpGisApi.Domain.Models;
+﻿namespace TdpGisApi.Application.Models;
 
 public enum GeometryType
 {
