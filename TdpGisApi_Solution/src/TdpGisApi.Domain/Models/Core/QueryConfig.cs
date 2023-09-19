@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace TdpGisApi.Domain.Models.Core;
 
-namespace TdpGisApi.Core.Models;
-
-public class QueryConfig: IEntity
+public class QueryConfig
 {
-    [Key] public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
     public required string Name { get; set; }
 
@@ -16,7 +14,7 @@ public class QueryConfig: IEntity
 
     public required List<PropertyOutput> Mappings { get; set; }
 
-    public Guid ConnectionId { get; set; }
+    public required ConnectionObject Connection { get; set; }
 
     public GeometryType GeometryType { get; set; }
 }

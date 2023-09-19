@@ -1,4 +1,4 @@
-﻿namespace TdpGisApi.Configuration.Models.Core;
+﻿namespace TdpGisApi.Domain.Models.Core;
 
 public enum PropertyType
 {

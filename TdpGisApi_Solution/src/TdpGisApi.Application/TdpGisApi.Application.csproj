@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TdpGisApi.Configuration\TdpGisApi.Configuration.csproj" />
+    <ProjectReference Include="..\TdpGisApi.Configuration\TdpGisApi.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

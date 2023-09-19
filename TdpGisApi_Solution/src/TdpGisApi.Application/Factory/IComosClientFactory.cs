@@ -1,5 +1,5 @@
 ﻿using Microsoft.Azure.Cosmos;
-using TdpGisApi.Configuration.Models.Core;
+using TdpGisApi.Domain.Models.Core;
 
 namespace TdpGisApi.Application.Factory;
 

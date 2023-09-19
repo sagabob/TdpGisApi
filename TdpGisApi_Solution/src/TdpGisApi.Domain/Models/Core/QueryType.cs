@@ -1,4 +1,4 @@
-﻿namespace TdpGisApi.Core.Models;
+﻿namespace TdpGisApi.Domain.Models.Core;
 
 public enum QueryType
 {
