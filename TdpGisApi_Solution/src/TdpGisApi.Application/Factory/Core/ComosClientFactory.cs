@@ -1,9 +1,9 @@
 ﻿using Microsoft.Azure.Cosmos;
-using TdpGisApi.Application.Models.Core;
+using TdpGisApi.Domain.Models;
 
 namespace TdpGisApi.Application.Factory.Core;
 
-public class ComosClientFactory: IComosClientFactory
+public class ComosClientFactory : IComosClientFactory
 {
     public CosmosClient Create(ConnectionObject connectionObject)
     {
