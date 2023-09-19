@@ -17,4 +17,8 @@
     <Folder Include="Handlers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TdpGisApi.Domain\TdpGisApi.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
