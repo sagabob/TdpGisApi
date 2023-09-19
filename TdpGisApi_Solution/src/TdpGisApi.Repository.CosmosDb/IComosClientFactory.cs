@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
 using TdpGisApi.Application.Models;
 
-namespace TdpGisApi.Application.Factory;
+namespace TdpGisApi.Repository.CosmosDb;
 
 public interface IComosClientFactory
 {
