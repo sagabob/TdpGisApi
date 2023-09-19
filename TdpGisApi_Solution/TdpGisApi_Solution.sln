@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TdpGisApi.Application", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TdpGisApi.Endpoints", "src\TdpGisApi.Endpoints\TdpGisApi.Endpoints.csproj", "{5B96982E-244B-46DC-A4C2-7701E9AA88B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TdpGisApi.Configuration", "src\TdpGisApi.Configuration\TdpGisApi.Configuration.csproj", "{FFE1466C-EE4D-4E44-897D-E45045CBF009}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TdpGisApi.Configuration.CosmosDb", "src\TdpGisApi.Configuration.CosmosDb\TdpGisApi.Configuration.CosmosDb.csproj", "{99D6A411-520D-49B8-8808-90849C18F99A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,14 @@ Global
 		{5B96982E-244B-46DC-A4C2-7701E9AA88B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B96982E-244B-46DC-A4C2-7701E9AA88B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B96982E-244B-46DC-A4C2-7701E9AA88B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFE1466C-EE4D-4E44-897D-E45045CBF009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFE1466C-EE4D-4E44-897D-E45045CBF009}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFE1466C-EE4D-4E44-897D-E45045CBF009}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFE1466C-EE4D-4E44-897D-E45045CBF009}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99D6A411-520D-49B8-8808-90849C18F99A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99D6A411-520D-49B8-8808-90849C18F99A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99D6A411-520D-49B8-8808-90849C18F99A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99D6A411-520D-49B8-8808-90849C18F99A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +42,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{762304E3-3AAE-41DF-98BF-50C19B127E3F} = {7FEC78CB-C414-4EC1-B9A3-110E3658298C}
 		{5B96982E-244B-46DC-A4C2-7701E9AA88B7} = {7FEC78CB-C414-4EC1-B9A3-110E3658298C}
+		{FFE1466C-EE4D-4E44-897D-E45045CBF009} = {7FEC78CB-C414-4EC1-B9A3-110E3658298C}
+		{99D6A411-520D-49B8-8808-90849C18F99A} = {7FEC78CB-C414-4EC1-B9A3-110E3658298C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2DF60006-55D5-4D79-B328-7B8CC9A24748}

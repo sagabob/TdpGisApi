@@ -5,7 +5,7 @@ using Microsoft.Azure.Cosmos.Linq;
 
 namespace TdpGisApi.Application.Services.Core;
 
-public partial class CosmosdbRepository : ICosmosRepository
+public class CosmosdbRepository : ICosmosRepository
 {
     private static readonly CosmosLinqSerializerOptions CosmosLinqSerializerOptions =
         new() { PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase };
@@ -61,7 +61,7 @@ public partial class CosmosdbRepository : ICosmosRepository
     public async Task<CosmosRepositoryResult<T>> Delete<T>(string id, string partitionKey)
         where T : class
     {
-        ItemResponse<T> response = null;
+        ItemResponse<T> response = null!;
         try
         {
             response = await _cosmosContainer.DeleteItemAsync<T>(id, new PartitionKey(partitionKey));
@@ -69,14 +69,14 @@ public partial class CosmosdbRepository : ICosmosRepository
         }
         catch (CosmosException ex)
         {
-            return new CosmosRepositoryResult<T>(response?.StatusCode ?? HttpStatusCode.BadRequest, null, ex.Message);
+            return new CosmosRepositoryResult<T>(response?.StatusCode ?? HttpStatusCode.BadRequest, null!, ex.Message);
         }
     }
 
     public async Task<CosmosRepositoryResult<T>> Upsert<T>(string partitionKey, T model)
         where T : class
     {
-        ItemResponse<T> response = null;
+        ItemResponse<T> response = null!;
         try
         {
             // result.StatusCode == System.Net.HttpStatusCode.OK || historyResult.StatusCode == System.Net.HttpStatusCode.Created
@@ -86,7 +86,7 @@ public partial class CosmosdbRepository : ICosmosRepository
         }
         catch (CosmosException ex)
         {
-            return new CosmosRepositoryResult<T>(response?.StatusCode ?? HttpStatusCode.BadRequest, null, ex.Message);
+            return new CosmosRepositoryResult<T>(response?.StatusCode ?? HttpStatusCode.BadRequest, null!, ex.Message);
         }
     }
 

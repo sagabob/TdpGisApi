@@ -1,4 +1,4 @@
-﻿namespace TdpGisApi.Application.Models.Core;
+﻿namespace TdpGisApi.Configuration.Models.Core;
 
 public enum GeometryType
 {
