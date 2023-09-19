@@ -1,6 +1,5 @@
 ﻿using TdpGisApi.Domain.Models;
-using GeometryType = Microsoft.Azure.Cosmos.Spatial.GeometryType;
-using QueryType = DnsClient.QueryType;
+
 
 namespace TdpGisApi.Application.Dto;
 
