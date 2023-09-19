@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.35.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TdpGisApi.Application\TdpGisApi.Application.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos;
 using TdpGisApi.Application.Factory;
-using TdpGisApi.Domain.Models;
+using TdpGisApi.Application.Models;
 
 namespace TdpGisApi.Repository.CosmosDb.Factory;
 
