@@ -20,7 +20,6 @@ public class CosmosGisAppContext : GisAppContext
         modelBuilder.Entity<QueryConfig>()
             .HasNoDiscriminator()
             .ToContainer("AppFeatures")
-        
             .HasKey(conn => conn.Id);
     }
 }
