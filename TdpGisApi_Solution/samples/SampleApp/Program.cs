@@ -27,6 +27,8 @@ services.AddDbContextFactory<CosmosGisAppContext>(optionsBuilder =>
 
 services.AddSingleton(new CosmosClient(cosmosConnectionString));
 
+services.AddSingleton<IConfiguration>(config);
+
 services.AddTransient<DbService>();
 
 await using var serviceProvider = services.BuildServiceProvider();

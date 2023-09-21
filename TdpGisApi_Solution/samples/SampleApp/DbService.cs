@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using TdpGisApi.Application.CosmosDb.Context;
 using TdpGisApi.Application.Models;
 
@@ -9,11 +10,13 @@ public class DbService
 {
     private readonly IDbContextFactory<CosmosGisAppContext> _contextFactory;
     private readonly CosmosClient _cosmosClient;
+    private readonly IConfiguration _configuration;
 
-    public DbService(IDbContextFactory<CosmosGisAppContext> contextFactory, CosmosClient cosmosClient)
+    public DbService(IDbContextFactory<CosmosGisAppContext> contextFactory, CosmosClient cosmosClient, IConfiguration configuration)
     {
         _contextFactory = contextFactory;
         _cosmosClient = cosmosClient;
+        _configuration = configuration;
     }
 
     private async Task RecreateDatabase()
@@ -50,7 +53,7 @@ public class DbService
         {
             Id = new Guid(),
             DatabaseId = "GeoDatabases",
-            ConnectionString = "Test",
+            ConnectionString = _configuration["CosmosReadOnlyConnectionString"]!,
             ConnectionType = ConnectionType.ConnectionString,
             DbType = DbType.Cosmosdb,
             Name = "Main Connection",
@@ -60,20 +63,42 @@ public class DbService
         var output1 = new PropertyOutput()
         {
             Id = new Guid(),
-            PropertyName = "Title",
-            OutputName = "Description",
+            PropertyName = "ParkName",
+            OutputName = "Name",
             PropertyType = PropertyType.Normal
+        };
+        var output2 = new PropertyOutput()
+        {
+            Id = new Guid(),
+            PropertyName = "ParkTypeDescription",
+            OutputName = "Type",
+            PropertyType = PropertyType.Normal
+        };
+
+        var output3 = new PropertyOutput()
+        {
+            Id = new Guid(),
+            PropertyName = "Area",
+            OutputName = "Area",
+            PropertyType = PropertyType.Normal
+        };
+        var output4 = new PropertyOutput()
+        {
+            Id = new Guid(),
+            PropertyName = "Location",
+            OutputName = "Location",
+            PropertyType = PropertyType.Spatial
         };
 
         var feature = new QueryConfig()
         {
             Id = new Guid(),
-            Name = "Sample Feature",
-            Description = "Sample",
+            Name = "Parks",
+            Description = "Parks in CC",
             Connection = conn,
             QueryType = QueryType.Text,
-            QueryField = "Name",
-            Mappings = new List<PropertyOutput>() { output1 },
+            QueryField = "ParkName",
+            Mappings = new List<PropertyOutput>() { output1, output2, output3, output4 },
             IsDisabled = false,
             ShowLevel = ShowLevel.Public
         };

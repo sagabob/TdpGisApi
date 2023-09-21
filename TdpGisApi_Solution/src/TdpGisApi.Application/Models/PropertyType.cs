@@ -3,5 +3,6 @@
 public enum PropertyType
 {
     Normal,
-    Object
+    Object,
+    Spatial
 }
