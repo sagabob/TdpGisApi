@@ -17,6 +17,7 @@ public class CosmosGisAppContext : GisAppContext
     {
         modelBuilder.Entity<ConnectionObject>()
             .HasNoDiscriminator()
+            .HasPartitionKey(x => x.DbType)
             .ToContainer("AppConnections")
             .HasKey(conn => conn.Id);
 
@@ -32,6 +33,7 @@ public class CosmosGisAppContext : GisAppContext
 
         modelBuilder.Entity<QueryConfig>()
             .HasNoDiscriminator()
+            .HasPartitionKey(x => x.ShowLevel)
             .ToContainer("AppFeatures")
             .HasKey(conn => conn.Id);
 
