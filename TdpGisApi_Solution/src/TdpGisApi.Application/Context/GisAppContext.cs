@@ -8,8 +8,8 @@ public class GisAppContext : DbContext
     public GisAppContext(DbContextOptions options)
         : base(options)
     { }
-    public DbSet<ConnectionObject> Connections { get; set; } = null!;
+    public DbSet<ConnectionObject> AppConnections { get; set; } = null!;
 
-    public DbSet<QueryConfig> QueryConfigs { get; set; } = null!;
+    public DbSet<QueryConfig> AppFeatures { get; set; } = null!;
     
 }

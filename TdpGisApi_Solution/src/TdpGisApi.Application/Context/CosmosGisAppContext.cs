@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TdpGisApi.Application.Context;
 using TdpGisApi.Application.Models;
 
-namespace TdpGisApi.Application.CosmosDb.Context;
+namespace TdpGisApi.Application.Context;
 
 public class CosmosGisAppContext : GisAppContext
 {

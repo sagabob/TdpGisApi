@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\TdpGisApi.Application.CosmosDb\TdpGisApi.Application.CosmosDb.csproj" />
+    <ProjectReference Include="..\..\src\TdpGisApi.Application\TdpGisApi.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,3 +1,6 @@
+using TdpGisApi.Application.Extensions;
+using TdpGisApi.Application.Handlers;
+using TdpGisApi.Application.Handlers.Core;
 using TdpGisApi.Endpoints.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +12,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.LoadApplicationConfiguration(builder.Configuration);
+builder.Services.AddSingleton<ILoadAppConfigurationHandler, LoadAppConfigurationHandler>();
+
 var app = builder.Build();
+
+var conn = await app.Services.GetService<ILoadAppConfigurationHandler>()!.Features();
 
 app.UseMiddleware<CustomExceptionHandlingMiddleware>();
 // Configure the HTTP request pipeline.

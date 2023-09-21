@@ -15,7 +15,6 @@ public class QueryConfigDto
     public required string QueryField { get; set; }
 
     public required List<PropertyOutput> Mappings { get; set; }
-
     public GeometryType GeometryType { get; set; }
     public Guid ConnectionId { get; set; }
 }
