@@ -1,34 +1,13 @@
-﻿using Microsoft.Azure.Cosmos;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using TdpGisApi.Application.Context;
-using TdpGisApi.Endpoints.Models;
+﻿using Microsoft.Extensions.DependencyInjection;
+using TdpGisApi.Application.Mapper;
 
-namespace TdpGisApi.Application.Extensions
+namespace TdpGisApi.Application.Extensions;
+
+public static class ApplicationExtensions
 {
-    public static class ApplicationExtensions
+    public static IServiceCollection RegisterAutoMapper(this IServiceCollection services)
     {
-        public static IServiceCollection LoadApplicationConfiguration(this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            var appSettings = new AppConfiguration();
-
-            configuration.GetSection(nameof(AppConfiguration)).Bind(appSettings);
-
-            services.AddDbContextFactory<CosmosGisAppContext>(optionsBuilder =>
-                optionsBuilder
-                    .UseCosmos(
-                        appSettings.ConnectionString,
-                        appSettings.Database,
-                        options =>
-                        {
-                            options.ConnectionMode(ConnectionMode.Direct);
-                            options.MaxRequestsPerTcpConnection(20);
-                            options.MaxTcpConnectionsPerEndpoint(32);
-                        }));
-
-            return services;
-        }
+        services.AddAutoMapper(typeof(MappingConfig));
+        return services;
     }
 }

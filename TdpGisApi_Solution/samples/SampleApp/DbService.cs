@@ -1,18 +1,19 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using TdpGisApi.Application.CosmosDb.Context;
+using TdpGisApi.Application.Context;
 using TdpGisApi.Application.Models;
 
 namespace SampleApp;
 
 public class DbService
 {
+    private readonly IConfiguration _configuration;
     private readonly IDbContextFactory<CosmosGisAppContext> _contextFactory;
     private readonly CosmosClient _cosmosClient;
-    private readonly IConfiguration _configuration;
 
-    public DbService(IDbContextFactory<CosmosGisAppContext> contextFactory, CosmosClient cosmosClient, IConfiguration configuration)
+    public DbService(IDbContextFactory<CosmosGisAppContext> contextFactory, CosmosClient cosmosClient,
+        IConfiguration configuration)
     {
         _contextFactory = contextFactory;
         _cosmosClient = cosmosClient;
@@ -32,7 +33,7 @@ public class DbService
     private void SetIndex()
     {
         _cosmosClient.GetDatabase("GisApp")
-            .DefineContainer(name: "AppConnections", partitionKeyPath: "/DbType")
+            .DefineContainer("AppConnections", "/DbType")
             .WithUniqueKey()
             .Path("/Name")
             .Attach();
@@ -49,7 +50,7 @@ public class DbService
 
     private async Task AddItemsFromDefaultContext(CosmosGisAppContext defaultContext)
     {
-        var conn = new ConnectionObject()
+        var conn = new ConnectionObject
         {
             Id = new Guid(),
             DatabaseId = "GeoDatabases",
@@ -60,14 +61,14 @@ public class DbService
             IsDisabled = false
         };
 
-        var output1 = new PropertyOutput()
+        var output1 = new PropertyOutput
         {
             Id = new Guid(),
             PropertyName = "ParkName",
             OutputName = "Name",
             PropertyType = PropertyType.Normal
         };
-        var output2 = new PropertyOutput()
+        var output2 = new PropertyOutput
         {
             Id = new Guid(),
             PropertyName = "ParkTypeDescription",
@@ -75,14 +76,14 @@ public class DbService
             PropertyType = PropertyType.Normal
         };
 
-        var output3 = new PropertyOutput()
+        var output3 = new PropertyOutput
         {
             Id = new Guid(),
             PropertyName = "Area",
             OutputName = "Area",
             PropertyType = PropertyType.Normal
         };
-        var output4 = new PropertyOutput()
+        var output4 = new PropertyOutput
         {
             Id = new Guid(),
             PropertyName = "Location",
@@ -90,7 +91,7 @@ public class DbService
             PropertyType = PropertyType.Spatial
         };
 
-        var feature = new QueryConfig()
+        var feature = new QueryConfig
         {
             Id = new Guid(),
             Name = "Parks",
@@ -98,7 +99,7 @@ public class DbService
             Connection = conn,
             QueryType = QueryType.Text,
             QueryField = "ParkName",
-            Mappings = new List<PropertyOutput>() { output1, output2, output3, output4 },
+            Mappings = new List<PropertyOutput> { output1, output2, output3, output4 },
             IsDisabled = false,
             ShowLevel = ShowLevel.Public
         };

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SampleApp;
-using TdpGisApi.Application.CosmosDb.Context;
+using TdpGisApi.Application.Context;
 
 var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
