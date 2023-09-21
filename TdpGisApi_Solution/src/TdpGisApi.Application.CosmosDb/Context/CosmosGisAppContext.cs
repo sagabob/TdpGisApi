@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Azure.Cosmos;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Data.Entity.Infrastructure.Annotations;
 using TdpGisApi.Application.Context;
 using TdpGisApi.Application.Models;
 
@@ -20,9 +22,13 @@ public class CosmosGisAppContext : GisAppContext
 
         modelBuilder.Entity<ConnectionObject>().Property(d => d.ConnectionType)
             .HasConversion(new EnumToStringConverter<ConnectionType>());
-
+        
         modelBuilder.Entity<ConnectionObject>().Property(d => d.DbType)
             .HasConversion(new EnumToStringConverter<DbType>());
+
+        //enforce the readable field Name to be unique
+        modelBuilder.Entity<ConnectionObject>().HasIndex(b => b.Name).IsUnique(true);
+
 
         modelBuilder.Entity<QueryConfig>()
             .HasNoDiscriminator()
@@ -34,6 +40,9 @@ public class CosmosGisAppContext : GisAppContext
 
         modelBuilder.Entity<QueryConfig>().Property(x => x.QueryType)
             .HasConversion(new EnumToStringConverter<QueryType>());
+
+        modelBuilder.Entity<QueryConfig>().Property(x => x.ShowLevel)
+            .HasConversion(new EnumToStringConverter<ShowLevel>());
 
         modelBuilder.Entity<QueryConfig>().OwnsMany(p => p.Mappings,
             a => { a.Property(x => x.PropertyType).HasConversion(new EnumToStringConverter<PropertyType>()); });

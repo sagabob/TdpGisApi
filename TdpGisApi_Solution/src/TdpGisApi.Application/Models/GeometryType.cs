@@ -2,6 +2,6 @@
 
 public enum GeometryType
 {
-    MultiPoint,
-    MultiPolygon
+    Point,
+    Polygon
 }

@@ -8,7 +8,7 @@ public class QueryConfig
 
     public string? Description { get; set; }
 
-    public QueryType QueryType { get; set; }
+    public required QueryType QueryType { get; set; }
 
     public required string QueryField { get; set; }
 
@@ -17,4 +17,8 @@ public class QueryConfig
     public required ConnectionObject Connection { get; set; }
 
     public GeometryType GeometryType { get; set; }
+
+    public required bool IsDisabled { get; set; }
+
+    public required ShowLevel ShowLevel { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Azure.Cosmos;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SampleApp;
@@ -15,15 +16,16 @@ var services = new ServiceCollection();
 services.AddDbContextFactory<CosmosGisAppContext>(optionsBuilder =>
     optionsBuilder
         .UseCosmos(
-            connectionString: cosmosConnectionString!,
-            databaseName: "GisApp",
-            cosmosOptionsAction: options =>
+            cosmosConnectionString!,
+            "GisApp",
+            options =>
             {
-                options.ConnectionMode(Microsoft.Azure.Cosmos.ConnectionMode.Direct);
+                options.ConnectionMode(ConnectionMode.Direct);
                 options.MaxRequestsPerTcpConnection(20);
                 options.MaxTcpConnectionsPerEndpoint(32);
             }));
 
+services.AddSingleton(new CosmosClient(cosmosConnectionString));
 
 services.AddTransient<DbService>();
 

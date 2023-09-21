@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Azure.Cosmos;
+using Microsoft.EntityFrameworkCore;
 using TdpGisApi.Application.CosmosDb.Context;
 using TdpGisApi.Application.Models;
 
@@ -7,10 +8,12 @@ namespace SampleApp;
 public class DbService
 {
     private readonly IDbContextFactory<CosmosGisAppContext> _contextFactory;
+    private readonly CosmosClient _cosmosClient;
 
-    public DbService(IDbContextFactory<CosmosGisAppContext> contextFactory)
+    public DbService(IDbContextFactory<CosmosGisAppContext> contextFactory, CosmosClient cosmosClient)
     {
         _contextFactory = contextFactory;
+        _cosmosClient = cosmosClient;
     }
 
     private async Task RecreateDatabase()
@@ -19,6 +22,17 @@ public class DbService
 
         await context.Database.EnsureDeletedAsync();
         await context.Database.EnsureCreatedAsync();
+
+        SetIndex();
+    }
+
+    private void SetIndex()
+    {
+        _cosmosClient.GetDatabase("GisApp")
+            .DefineContainer(name: "AppConnections", partitionKeyPath: "/DbType")
+            .WithUniqueKey()
+            .Path("/Name")
+            .Attach();
     }
 
     public async Task RunSample()
@@ -39,7 +53,8 @@ public class DbService
             ConnectionString = "Test",
             ConnectionType = ConnectionType.ConnectionString,
             DbType = DbType.Cosmosdb,
-            Name = "Main Connection"
+            Name = "Main Connection",
+            IsDisabled = false
         };
 
         var output1 = new PropertyOutput()
@@ -58,7 +73,9 @@ public class DbService
             Connection = conn,
             QueryType = QueryType.Text,
             QueryField = "Name",
-            Mappings = new List<PropertyOutput>() { output1 }
+            Mappings = new List<PropertyOutput>() { output1 },
+            IsDisabled = false,
+            ShowLevel = ShowLevel.Public
         };
 
         defaultContext.Add(conn);
