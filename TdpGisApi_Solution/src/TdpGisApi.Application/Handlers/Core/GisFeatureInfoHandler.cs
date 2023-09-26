@@ -4,7 +4,7 @@ using TdpGisApi.Application.Factory;
 
 namespace TdpGisApi.Application.Handlers.Core;
 
-public class GisFeatureInfoHandler: IGisFeatureInfoHandler
+public class GisFeatureInfoHandler : IGisFeatureInfoHandler
 {
     private readonly IGisAppFactory _gisAppFactory;
     private readonly IMapper _mapper;

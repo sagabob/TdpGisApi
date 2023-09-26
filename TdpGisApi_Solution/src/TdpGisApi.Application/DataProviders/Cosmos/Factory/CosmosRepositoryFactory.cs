@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
-using TdpGisApi.Application.Repos.Cosmos.Repos;
+using TdpGisApi.Application.DataProviders.Cosmos.Repos;
 
-namespace TdpGisApi.Application.Repos.Cosmos.Factory;
+namespace TdpGisApi.Application.DataProviders.Cosmos.Factory;
 
 public class CosmosRepositoryFactory : ICosmosRepositoryFactory
 {
@@ -9,4 +9,4 @@ public class CosmosRepositoryFactory : ICosmosRepositoryFactory
     {
         return new CosmosRepository(cosmosClient, databaseId, collectionName);
     }
-} 
+}

@@ -9,8 +9,7 @@ namespace TdpGisApi.Endpoints.Controllers;
 [ApiController]
 public class GisFeatureInfoController : ControllerBase
 {
-    private readonly IGisAppFactory _gisAppFactory;
-    private readonly IMapper _mapper;
+
 
     public GisFeatureInfoController(IGisAppFactory gisAppFactory, IMapper mapper)
     {

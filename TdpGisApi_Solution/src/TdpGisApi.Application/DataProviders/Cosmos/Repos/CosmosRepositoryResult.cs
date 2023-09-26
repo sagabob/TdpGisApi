@@ -1,5 +1,5 @@
 ﻿using System.Net;
 
-namespace TdpGisApi.Application.Repos.Cosmos.Repos;
+namespace TdpGisApi.Application.DataProviders.Cosmos.Repos;
 
 public record CosmosRepositoryResult<T>(HttpStatusCode StatusCode, T Model, string ErrorMessage);

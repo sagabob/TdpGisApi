@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using TdpGisApi.Application.DataProviders.Cosmos;
+using TdpGisApi.Application.DataProviders.Cosmos.Factory;
 using TdpGisApi.Application.Handlers;
 using TdpGisApi.Application.Handlers.Core;
 using TdpGisApi.Application.Mapper;

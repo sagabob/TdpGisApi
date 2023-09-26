@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
 
-namespace TdpGisApi.Repository.CosmosDb.Repos;
+namespace TdpGisApi.Application.DataProviders.Cosmos.Repos;
 
 public class CosmosRepository : ICosmosRepository
 {
