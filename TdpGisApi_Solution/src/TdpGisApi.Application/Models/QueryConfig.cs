@@ -6,6 +6,12 @@ public class QueryConfig
 
     public required string Name { get; set; }
 
+    public required string DisplayName { get; set; }
+
+    public required string CollectionName { get; set; }
+
+    public string? PartitionKey { get; set; }
+
     public string? Description { get; set; }
 
     public required QueryType QueryType { get; set; }

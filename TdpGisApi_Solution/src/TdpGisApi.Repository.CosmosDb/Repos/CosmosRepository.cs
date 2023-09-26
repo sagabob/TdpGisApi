@@ -5,7 +5,7 @@ using Microsoft.Azure.Cosmos.Linq;
 
 namespace TdpGisApi.Repository.CosmosDb.Repos;
 
-public class CosmosdbRepository : ICosmosRepository
+public class CosmosRepository : ICosmosRepository
 {
     private static readonly CosmosLinqSerializerOptions CosmosLinqSerializerOptions =
         new() { PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase };
@@ -15,14 +15,12 @@ public class CosmosdbRepository : ICosmosRepository
     private readonly string _databaseId;
     private Container _cosmosContainer = null!;
 
-    public CosmosdbRepository(CosmosClient cosmosClient, string databaseId, string collectionName
+    public CosmosRepository(CosmosClient cosmosClient, string databaseId, string collectionName
     )
     {
         _cosmosClient = cosmosClient;
         _databaseId = databaseId;
         _collectionName = collectionName;
-
-        GetContainer();
     }
 
     public Task<IOrderedQueryable<T>> Query<T>(string partitionKey)
@@ -90,8 +88,7 @@ public class CosmosdbRepository : ICosmosRepository
         }
     }
 
-
-    private void GetContainer()
+    public void GetContainer()
     {
         _cosmosContainer = _cosmosClient.GetContainer(_databaseId, _collectionName);
     }

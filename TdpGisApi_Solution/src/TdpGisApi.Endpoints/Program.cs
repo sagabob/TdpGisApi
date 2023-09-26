@@ -22,6 +22,8 @@ builder.Services.AddSingleton(appSettings);
 if (appSettings.DatabaseType == DbType.Cosmosdb) builder.Services.AddScoped<IGisAppFactory, CosmosGisAppFactory>();
 
 builder.Services.RegisterAutoMapper();
+builder.Services.RegisterHandlers();
+builder.Services.RegisterComosComponents();
 
 var app = builder.Build();
 

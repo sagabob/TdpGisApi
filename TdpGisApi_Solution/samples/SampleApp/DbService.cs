@@ -95,13 +95,17 @@ public class DbService
         {
             Id = new Guid(),
             Name = "Parks",
+            DisplayName = "Parks",
+            CollectionName = "Parks",
+            PartitionKey = "Locality",
             Description = "Parks in CC",
             Connection = conn,
             QueryType = QueryType.Text,
             QueryField = "ParkName",
             Mappings = new List<PropertyOutput> { output1, output2, output3, output4 },
             IsDisabled = false,
-            ShowLevel = ShowLevel.Public
+            ShowLevel = ShowLevel.Public,
+            GeometryType = GeometryType.Polygon
         };
 
         defaultContext.Add(conn);
