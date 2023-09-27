@@ -30,14 +30,13 @@ public class CosmosRepository : ICosmosRepository
             linqSerializerOptions: CosmosLinqSerializerOptions));
     }
 
-    public async Task<List<T>> QuerySql<T>(string sql, object paramValues, string partitionKey) where T : class
+    public async Task<List<T>> QuerySql<T>(string sql, IDictionary<string, string> parameters, string partitionKey)
+        where T : class
     {
         // remove \r\n and whitespace
         var query = new QueryDefinition(Regex.Replace(sql, @"\s+", " ").Trim());
 
-        var dictionary = paramValues.GetType().GetProperties()
-            .ToDictionary(x => x.Name, x => x.GetValue(paramValues)?.ToString() ?? "");
-        foreach (var kvp in dictionary) query.WithParameter("@" + kvp.Key, kvp.Value);
+        foreach (var kvp in parameters) query.WithParameter("@" + kvp.Key, kvp.Value);
 
         var results = new List<T>();
         using var resultSetIterator = _cosmosContainer.GetItemQueryIterator<T>(

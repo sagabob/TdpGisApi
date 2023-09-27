@@ -2,7 +2,7 @@
 using TdpGisApi.Application.Dto;
 using TdpGisApi.Application.Models;
 
-namespace TdpGisApi.Application.Mapper;
+namespace TdpGisApi.Application.Mappers;
 
 public class MappingConfig : Profile
 {

@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using TdpGisApi.Application.Dto;
-using TdpGisApi.Application.Factory;
+﻿using Microsoft.AspNetCore.Mvc;
 using TdpGisApi.Application.Handlers;
 
 namespace TdpGisApi.Endpoints.Controllers;
@@ -17,7 +14,7 @@ public class GisFeatureInfoController : ControllerBase
     {
         _gisFeatureInfoHandler = gisFeatureInfoHandler;
     }
-    
+
     [HttpGet]
     [Route("instances")]
     public async Task<IActionResult> Instances()
