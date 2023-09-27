@@ -7,10 +7,8 @@ public class ComosClientFactory : IComosClientFactory
 {
     public CosmosClient Create(ConnectionObject connectionObject)
     {
-        if (connectionObject.ConnectionType == ConnectionType.ConnectionString)
-            return new CosmosClient(connectionObject.ConnectionString);
-
+        return new CosmosClient(connectionObject.ConnectionParameters["URL"],
+            connectionObject.ConnectionParameters["KEY"]);
         //TODO Will implement how to create CosmosClient with RBAC credentials
-        return new CosmosClient(connectionObject.ConnectionString);
     }
 }

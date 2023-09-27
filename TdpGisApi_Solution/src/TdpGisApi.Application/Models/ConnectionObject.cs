@@ -4,7 +4,7 @@ public class ConnectionObject
 {
     public required string Name { get; set; }
 
-    public required string ConnectionString { get; set; }
+    public required IDictionary<string, string> ConnectionParameters { get; set; }
 
     public required string DatabaseId { get; set; }
 

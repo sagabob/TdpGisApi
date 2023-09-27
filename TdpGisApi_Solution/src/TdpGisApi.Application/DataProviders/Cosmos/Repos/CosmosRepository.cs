@@ -1,7 +1,7 @@
-﻿using System.Net;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Cosmos.Linq;
+using Newtonsoft.Json.Linq;
+using TdpGisApi.Application.Models;
 
 namespace TdpGisApi.Application.DataProviders.Cosmos.Repos;
 
@@ -23,81 +23,37 @@ public class CosmosRepository : ICosmosRepository
         _collectionName = collectionName;
     }
 
-    public Task<IOrderedQueryable<T>> Query<T>(string partitionKey)
-    {
-        return Task.FromResult(_cosmosContainer.GetItemLinqQueryable<T>(
-            requestOptions: new QueryRequestOptions { PartitionKey = new PartitionKey(partitionKey) },
-            linqSerializerOptions: CosmosLinqSerializerOptions));
-    }
 
-    public async Task<List<T>> QuerySql<T>(string sql, IDictionary<string, string> parameters, string partitionKey)
-        where T : class
+    public async Task<List<JObject>> QuerySql(string sql, QueryConfig featureConfig)
+
     {
         // remove \r\n and whitespace
         var query = new QueryDefinition(Regex.Replace(sql, @"\s+", " ").Trim());
 
-        foreach (var kvp in parameters) query.WithParameter("@" + kvp.Key, kvp.Value);
+        var results = new List<JObject>();
+        var iterator = _cosmosContainer.GetItemQueryIterator<dynamic>(query);
 
-        var results = new List<T>();
-        using var resultSetIterator = _cosmosContainer.GetItemQueryIterator<T>(
-            query,
-            requestOptions: new QueryRequestOptions
-            {
-                PartitionKey = new PartitionKey(partitionKey)
-            });
 
-        while (resultSetIterator.HasMoreResults)
+        while (iterator.HasMoreResults)
         {
-            var response = await resultSetIterator.ReadNextAsync();
-            results.AddRange(response.Resource);
+            var documents = await iterator.ReadNextAsync();
+            foreach (var document in documents)
+            {
+                var jsonItem = new JObject { { "id", document.id } };
+
+                foreach (var map in featureConfig.Mappings.Where(map => document[map.PropertyName] != null))
+                    jsonItem.Add(map.OutputName, document[map.PropertyName]);
+
+                results.Add(jsonItem);
+            }
         }
 
         return results;
     }
 
-    public async Task<CosmosRepositoryResult<T>> Delete<T>(string id, string partitionKey)
-        where T : class
-    {
-        ItemResponse<T> response = null!;
-        try
-        {
-            response = await _cosmosContainer.DeleteItemAsync<T>(id, new PartitionKey(partitionKey));
-            return new CosmosRepositoryResult<T>(response.StatusCode, response.Resource, string.Empty);
-        }
-        catch (CosmosException ex)
-        {
-            return new CosmosRepositoryResult<T>(response?.StatusCode ?? HttpStatusCode.BadRequest, null!, ex.Message);
-        }
-    }
-
-    public async Task<CosmosRepositoryResult<T>> Upsert<T>(string partitionKey, T model)
-        where T : class
-    {
-        ItemResponse<T> response = null!;
-        try
-        {
-            // result.StatusCode == System.Net.HttpStatusCode.OK || historyResult.StatusCode == System.Net.HttpStatusCode.Created
-            response = await _cosmosContainer.UpsertItemAsync(partitionKey: new PartitionKey(partitionKey),
-                item: model);
-            return new CosmosRepositoryResult<T>(response.StatusCode, response.Resource, string.Empty);
-        }
-        catch (CosmosException ex)
-        {
-            return new CosmosRepositoryResult<T>(response?.StatusCode ?? HttpStatusCode.BadRequest, null!, ex.Message);
-        }
-    }
 
     public void GetContainer()
     {
         _cosmosContainer = _cosmosClient.GetContainer(_databaseId, _collectionName);
-    }
-
-    public static async Task<List<T>> LinqQueryToResults<T>(IQueryable<T> queryable)
-    {
-        var results = new List<T>();
-        using var iterator = queryable.ToFeedIterator();
-        while (iterator.HasMoreResults) results.AddRange(await iterator.ReadNextAsync());
-
-        return results;
     }
 }

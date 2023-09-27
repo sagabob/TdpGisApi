@@ -1,6 +1,8 @@
-﻿namespace TdpGisApi.Application.Handlers;
+﻿using Newtonsoft.Json.Linq;
+
+namespace TdpGisApi.Application.Handlers;
 
 public interface IGisFeatureDataHandler
 {
-    Task<List<dynamic>> GetFeatureDataByText(Guid featureId, string text);
+    Task<List<JObject>> GetFeatureDataByText(Guid featureId, string text);
 }

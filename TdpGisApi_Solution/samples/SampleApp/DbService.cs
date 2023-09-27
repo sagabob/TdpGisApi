@@ -50,11 +50,17 @@ public class DbService
 
     private async Task AddItemsFromDefaultContext(CosmosGisAppContext defaultContext)
     {
+
+        IDictionary<string, string> parameters = new Dictionary<string, string>
+        {
+            { "URL", _configuration["URL"]! },
+            { "KEY", _configuration["KEY"]! }
+        };
         var conn = new ConnectionObject
         {
             Id = new Guid(),
             DatabaseId = "GeoDatabases",
-            ConnectionString = _configuration["CosmosReadOnlyConnectionString"]!,
+            ConnectionParameters = parameters,
             ConnectionType = ConnectionType.ConnectionString,
             DbType = DbType.Cosmosdb,
             Name = "Main Connection",

@@ -5,7 +5,7 @@ using TdpGisApi.Application.Models;
 
 namespace TdpGisApi.Application.Handlers.Core;
 
-public class GisFeatureDataHandler: IGisFeatureDataHandler
+public class GisFeatureDataHandler : IGisFeatureDataHandler
 {
     private readonly IComosClientFactory _comosClientFactory;
     private readonly ICosmosRepositoryFactory _cosmosRepositoryFactory;
@@ -19,7 +19,7 @@ public class GisFeatureDataHandler: IGisFeatureDataHandler
         _cosmosRepositoryFactory = cosmosRepositoryFactory;
     }
 
-    public async Task<List<dynamic>> GetFeatureDataByText(Guid featureId, string text)
+    public async Task<List<JObject>> GetFeatureDataByText(Guid featureId, string text)
     {
         var featureInfo = (await _gisAppFactory.CreateAppFeatureData()).Features.FirstOrDefault(x => x.Id == featureId);
         switch (featureInfo)
@@ -31,22 +31,23 @@ public class GisFeatureDataHandler: IGisFeatureDataHandler
                 try
                 {
                     var cosmosClient = _comosClientFactory.Create(featureInfo.Connection);
-                    var repos = _cosmosRepositoryFactory.CreateRepository(cosmosClient, featureInfo.Connection.DatabaseId,
+                    var repos = _cosmosRepositoryFactory.CreateRepository(cosmosClient,
+                        featureInfo.Connection.DatabaseId,
                         featureInfo.CollectionName);
 
                     repos.GetContainer();
 
-                    var queryableFeatures = await repos.Query<dynamic>(featureInfo.PartitionKey!);
-                    var result = queryableFeatures.Take(10).ToList();
+                    var querySql = $"SELECT * FROM c WHERE c.{featureInfo.QueryField} like '%{text}%' ";
 
-                    return result;
+                    var results = await repos.QuerySql(querySql, featureInfo);
+
+                    return results;
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
                     throw;
                 }
-               
             }
             default:
                 throw new NotImplementedException();

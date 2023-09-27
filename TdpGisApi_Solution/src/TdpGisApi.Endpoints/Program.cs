@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using Newtonsoft.Json.Converters;
 using TdpGisApi.Application.Configuration;
 using TdpGisApi.Application.Extensions;
 using TdpGisApi.Application.Factory;
@@ -8,12 +8,9 @@ using TdpGisApi.Endpoints.Middleware;
 var builder = WebApplication.CreateBuilder(args);
 
 
-
-builder.Services.AddControllers().AddJsonOptions(x =>
-{
-    // serialize enums as strings in api responses (e.g. Role)
-    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
