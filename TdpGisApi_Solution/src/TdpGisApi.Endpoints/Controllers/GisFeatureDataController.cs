@@ -15,7 +15,7 @@ public class GisFeatureDataController : ControllerBase
     }
 
     [HttpGet]
-    [Route("bytext/{feature:Guid}/{text}")]
+    [Route("searchbyphrase/{feature:Guid}/{text}")]
     public async Task<IActionResult> FeaturesByText(Guid feature, string text)
     {
         var result = await _gisFeatureDataHandler.GetFeatureDataByText(feature, text);

@@ -39,7 +39,7 @@ public class CosmosRepository : ICosmosRepository
             var documents = await iterator.ReadNextAsync();
             foreach (var document in documents)
             {
-                var jsonItem = new JObject { { "id", document.id } };
+                var jsonItem = new JObject { { "Id", document.id } };
 
                 foreach (var map in featureConfig.Mappings.Where(map => document[map.PropertyName] != null))
                     jsonItem.Add(map.OutputName, document[map.PropertyName]);

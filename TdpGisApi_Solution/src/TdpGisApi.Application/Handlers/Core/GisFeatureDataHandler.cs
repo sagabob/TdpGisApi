@@ -37,7 +37,7 @@ public class GisFeatureDataHandler : IGisFeatureDataHandler
 
                     repos.GetContainer();
 
-                    var querySql = $"SELECT * FROM c WHERE c.{featureInfo.QueryField} like '%{text}%' ";
+                    var querySql = $"SELECT TOP 100 * FROM c WHERE c.{featureInfo.QueryField} like '%{text}%' ";
 
                     var results = await repos.QuerySql(querySql, featureInfo);
 
