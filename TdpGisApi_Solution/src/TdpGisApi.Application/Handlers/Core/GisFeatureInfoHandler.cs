@@ -21,4 +21,11 @@ public class GisFeatureInfoHandler : IGisFeatureInfoHandler
         var featureDto = _mapper.Map<List<QueryConfigDto>>(features.Features);
         return featureDto;
     }
+
+    public async Task<List<QueryConfigLite>> GetFeatureLite()
+    {
+        var features = await _gisAppFactory.CreateAppFeatureData();
+        var featureLite = _mapper.Map<List<QueryConfigLite>>(features.Features);
+        return featureLite;
+    }
 }

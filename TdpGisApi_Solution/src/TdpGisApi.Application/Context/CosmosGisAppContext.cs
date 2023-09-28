@@ -44,6 +44,10 @@ public class CosmosGisAppContext : GisAppContext
             .HasConversion(new EnumToStringConverter<ShowLevel>());
 
         modelBuilder.Entity<QueryConfig>().OwnsMany(p => p.Mappings,
-            a => { a.Property(x => x.PropertyType).HasConversion(new EnumToStringConverter<PropertyType>()); });
+            a =>
+            {
+                a.Property(x => x.PropertyType).HasConversion(new EnumToStringConverter<PropertyType>());
+                a.Property(x => x.ShowLevel).HasConversion(new EnumToStringConverter<ShowLevel>());
+            });
     }
 }

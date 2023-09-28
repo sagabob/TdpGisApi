@@ -8,7 +8,7 @@ public class ConnectionObject
 
     public required string DatabaseId { get; set; }
 
-    public required ConnectionType ConnectionType { get; set; }
+    public required ConnectionType ConnectionType { get; set; } = ConnectionType.ConnectionString;
 
     public required DbType DbType { get; set; }
 

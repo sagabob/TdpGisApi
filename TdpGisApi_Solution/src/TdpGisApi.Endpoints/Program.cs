@@ -1,4 +1,5 @@
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using TdpGisApi.Application.Configuration;
 using TdpGisApi.Application.Extensions;
 using TdpGisApi.Application.Factory;
@@ -10,7 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
-        options.SerializerSettings.Converters.Add(new StringEnumConverter()));
+        {
+            options.SerializerSettings.Converters.Add(new StringEnumConverter());
+            options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        }
+    );
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

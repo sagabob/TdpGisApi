@@ -50,7 +50,6 @@ public class DbService
 
     private async Task AddItemsFromDefaultContext(CosmosGisAppContext defaultContext)
     {
-
         IDictionary<string, string> parameters = new Dictionary<string, string>
         {
             { "URL", _configuration["URL"]! },
@@ -71,30 +70,34 @@ public class DbService
         {
             Id = new Guid(),
             PropertyName = "ParkName",
-            OutputName = "Title",
-            PropertyType = PropertyType.Normal
+            OutputName = "title",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
         };
         var park2 = new PropertyOutput
         {
             Id = new Guid(),
             PropertyName = "ParkTypeDescription",
-            OutputName = "Type",
-            PropertyType = PropertyType.Normal
+            OutputName = "type",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
         };
 
         var park3 = new PropertyOutput
         {
             Id = new Guid(),
             PropertyName = "Area",
-            OutputName = "Area",
-            PropertyType = PropertyType.Normal
+            OutputName = "area",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
         };
         var park4 = new PropertyOutput
         {
             Id = new Guid(),
             PropertyName = "Location",
-            OutputName = "Location",
-            PropertyType = PropertyType.Spatial
+            OutputName = "geometries",
+            PropertyType = PropertyType.Spatial,
+            ShowLevel = ShowLevel.Public
         };
 
         var parkFeature = new QueryConfig
@@ -118,39 +121,44 @@ public class DbService
         {
             Id = new Guid(),
             PropertyName = "StreetAddress",
-            OutputName = "Title",
-            PropertyType = PropertyType.Normal
+            OutputName = "title",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
         };
         var sta2 = new PropertyOutput
         {
             Id = new Guid(),
             PropertyName = "StreetAddressStatusDescription",
-            OutputName = "Current",
-            PropertyType = PropertyType.Normal
+            OutputName = "current",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
         };
 
         var sta3 = new PropertyOutput
         {
             Id = new Guid(),
             PropertyName = "OccupationLevelDescription",
-            OutputName = "OccupationLevel",
-            PropertyType = PropertyType.Normal
+            OutputName = "occupationLevel",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
         };
 
         var sta4 = new PropertyOutput
         {
             Id = new Guid(),
             PropertyName = "Locality",
-            OutputName = "Locality",
-            PropertyType = PropertyType.Normal
+            OutputName = "locality",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
         };
 
         var sta5 = new PropertyOutput
         {
             Id = new Guid(),
             PropertyName = "Location",
-            OutputName = "Location",
-            PropertyType = PropertyType.Spatial
+            OutputName = "geometries",
+            PropertyType = PropertyType.Spatial,
+            ShowLevel = ShowLevel.Public
         };
 
         var streetAddressFeature = new QueryConfig
@@ -170,9 +178,129 @@ public class DbService
             GeometryType = GeometryType.Point
         };
 
+
+        var place1 = new PropertyOutput
+        {
+            Id = new Guid(),
+            PropertyName = "PlaceName",
+            OutputName = "title",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
+        };
+
+
+        var place2 = new PropertyOutput
+        {
+            Id = new Guid(),
+            PropertyName = "Locality",
+            OutputName = "locality",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
+        };
+
+        var place3 = new PropertyOutput
+        {
+            Id = new Guid(),
+            PropertyName = "Location",
+            OutputName = "geometries",
+            PropertyType = PropertyType.Spatial,
+            ShowLevel = ShowLevel.Public
+        };
+
+        var placeFeature = new QueryConfig
+        {
+            Id = new Guid(),
+            Name = "Places",
+            DisplayName = "PointOfInterest",
+            CollectionName = "Places",
+            PartitionKey = "Locality",
+            Description = "Points of interest in CC",
+            Connection = conn,
+            QueryType = QueryType.Text,
+            QueryField = "PlaceName",
+            Mappings = new List<PropertyOutput> { place1, place2, place3 },
+            IsDisabled = false,
+            ShowLevel = ShowLevel.Public,
+            GeometryType = GeometryType.Point
+        };
+
+        var ratingUnit1 = new PropertyOutput
+        {
+            Id = new Guid(),
+            PropertyName = "StreetAddress",
+            OutputName = "title",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
+        };
+
+
+        var ratingUnit2 = new PropertyOutput
+        {
+            Id = new Guid(),
+            PropertyName = "OccupationLevelDescription",
+            OutputName = "occupationLevel",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
+        };
+
+        var ratingUnit3 = new PropertyOutput
+        {
+            Id = new Guid(),
+            PropertyName = "Locality",
+            OutputName = "locality",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
+        };
+
+        var ratingUnit4 = new PropertyOutput
+        {
+            Id = new Guid(),
+            PropertyName = "Location",
+            OutputName = "geometries",
+            PropertyType = PropertyType.Spatial,
+            ShowLevel = ShowLevel.Public
+        };
+
+        var ratingUnit5 = new PropertyOutput
+        {
+            Id = new Guid(),
+            PropertyName = "ValuationVisitOrder",
+            OutputName = "valuation",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
+        };
+
+        var ratingUnit6 = new PropertyOutput
+        {
+            Id = new Guid(),
+            PropertyName = "ValuationRollNumber",
+            OutputName = "valuationNumber",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
+        };
+
+        var ratingUnitFeature = new QueryConfig
+        {
+            Id = new Guid(),
+            Name = "RatingUnits",
+            DisplayName = "PointOfInterest",
+            CollectionName = "RatingUnits",
+            PartitionKey = "Locality",
+            Description = "Rating Units in CC",
+            Connection = conn,
+            QueryType = QueryType.Text,
+            QueryField = "StreetAddress",
+            Mappings = new List<PropertyOutput>
+                { ratingUnit1, ratingUnit2, ratingUnit3, ratingUnit4, ratingUnit5, ratingUnit6 },
+            IsDisabled = false,
+            ShowLevel = ShowLevel.Public,
+            GeometryType = GeometryType.Polygon
+        };
         defaultContext.Add(conn);
         defaultContext.Add(parkFeature);
+        defaultContext.Add(placeFeature);
         defaultContext.Add(streetAddressFeature);
+        defaultContext.Add(ratingUnitFeature);
         await defaultContext.SaveChangesAsync();
     }
 }

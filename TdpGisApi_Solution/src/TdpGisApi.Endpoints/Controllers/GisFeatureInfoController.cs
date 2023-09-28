@@ -23,4 +23,14 @@ public class GisFeatureInfoController : ControllerBase
 
         return Ok(featureDto);
     }
+
+
+    [HttpGet]
+    [Route("features")]
+    public async Task<IActionResult> Features()
+    {
+        var featureLite = await _gisFeatureInfoHandler.GetFeatureLite();
+
+        return Ok(featureLite);
+    }
 }
