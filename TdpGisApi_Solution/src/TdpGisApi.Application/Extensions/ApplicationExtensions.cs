@@ -19,6 +19,10 @@ public static class ApplicationExtensions
     {
         services.AddScoped<IGisFeatureInfoHandler, GisFeatureInfoHandler>();
         services.AddScoped<IGisFeatureDataHandler, GisFeatureDataHandler>();
+
+        //Not sure whether we should make it singleton
+        services.AddScoped<IGisFeatureDataCosmosHandler, GisFeatureDataCosmosHandler>();
+
         return services;
     }
 

@@ -1,25 +1,22 @@
 ﻿using Newtonsoft.Json.Linq;
-using TdpGisApi.Application.DataProviders.Cosmos;
 using TdpGisApi.Application.Factory;
 using TdpGisApi.Application.Models;
+using TdpGisApi.Application.Response;
 
 namespace TdpGisApi.Application.Handlers.Core;
 
 public class GisFeatureDataHandler : IGisFeatureDataHandler
 {
-    private readonly IComosClientFactory _comosClientFactory;
-    private readonly ICosmosRepositoryFactory _cosmosRepositoryFactory;
     private readonly IGisAppFactory _gisAppFactory;
+    private readonly IGisFeatureDataCosmosHandler _gisFeatureDataCosmosHandler;
 
-    public GisFeatureDataHandler(IGisAppFactory gisAppFactory, IComosClientFactory comosClientFactory,
-        ICosmosRepositoryFactory cosmosRepositoryFactory)
+    public GisFeatureDataHandler(IGisAppFactory gisAppFactory, IGisFeatureDataCosmosHandler gisFeatureDataCosmosHandler)
     {
         _gisAppFactory = gisAppFactory;
-        _comosClientFactory = comosClientFactory;
-        _cosmosRepositoryFactory = cosmosRepositoryFactory;
+        _gisFeatureDataCosmosHandler = gisFeatureDataCosmosHandler;
     }
 
-    public async Task<List<JObject>> GetFeatureDataByText(Guid featureId, string text)
+    public async Task<ApiOkResponse<PagedList<JObject>>> GetFeatureDataByText(Guid featureId, string text)
     {
         var featureInfo = (await _gisAppFactory.CreateAppFeatureData()).Features.FirstOrDefault(x => x.Id == featureId);
         switch (featureInfo)
@@ -30,18 +27,32 @@ public class GisFeatureDataHandler : IGisFeatureDataHandler
             {
                 try
                 {
-                    var cosmosClient = _comosClientFactory.Create(featureInfo.Connection);
-                    var repos = _cosmosRepositoryFactory.CreateRepository(cosmosClient,
-                        featureInfo.Connection.DatabaseId,
-                        featureInfo.CollectionName);
+                    return await _gisFeatureDataCosmosHandler.GetFeatureDataByText(featureInfo, text);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+            default:
+                throw new NotImplementedException();
+        }
+    }
 
-                    repos.GetContainer();
 
-                    var querySql = $"SELECT TOP 100 * FROM c WHERE c.{featureInfo.QueryField} like '%{text}%' ";
-
-                    var results = await repos.QuerySql(querySql, featureInfo);
-
-                    return results;
+    public async Task<ApiOkResponse<PagedList<JObject>>> GetPagingFeatureDataByText(Guid featureId, string text, int pageSize, int pageNumber, string token)
+    {
+        var featureInfo = (await _gisAppFactory.CreateAppFeatureData()).Features.FirstOrDefault(x => x.Id == featureId);
+        switch (featureInfo)
+        {
+            case null:
+                throw new KeyNotFoundException("Not found the queried feature");
+            case { Connection.DbType: DbType.Cosmosdb }:
+            {
+                try
+                {
+                    return await _gisFeatureDataCosmosHandler.GetPagingFeatureDataByText(featureInfo, text, pageSize,pageNumber, token);
                 }
                 catch (Exception e)
                 {

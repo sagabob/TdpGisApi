@@ -21,4 +21,12 @@ public class GisFeatureDataController : ControllerBase
         var result = await _gisFeatureDataHandler.GetFeatureDataByText(feature, text);
         return Ok(result);
     }
+
+    [HttpGet]
+    [Route("pagingsearchbyphrase/{feature:Guid}/{text}/{pageSize}/{pageNumber:int:min(1)}/{token}")]
+    public async Task<IActionResult> PagingFeaturesByText(Guid feature, string text, int pageSize, int pageNumber, string token)
+    {
+        var result = await _gisFeatureDataHandler.GetPagingFeatureDataByText(feature, text, pageSize, pageNumber, token);
+        return Ok(result);
+    }
 }

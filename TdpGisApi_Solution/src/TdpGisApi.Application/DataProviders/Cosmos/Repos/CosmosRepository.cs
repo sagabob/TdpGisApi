@@ -2,14 +2,12 @@
 using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json.Linq;
 using TdpGisApi.Application.Models;
+using TdpGisApi.Application.Response;
 
 namespace TdpGisApi.Application.DataProviders.Cosmos.Repos;
 
 public class CosmosRepository : ICosmosRepository
 {
-    private static readonly CosmosLinqSerializerOptions CosmosLinqSerializerOptions =
-        new() { PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase };
-
     private readonly string _collectionName;
     private readonly CosmosClient _cosmosClient;
     private readonly string _databaseId;
@@ -24,14 +22,15 @@ public class CosmosRepository : ICosmosRepository
     }
 
 
-    public async Task<List<JObject>> QuerySql(string sql, QueryConfig featureConfig)
+    public async Task<ApiOkResponse<PagedList<JObject>>> QuerySql(string sql, QueryConfig featureConfig)
 
     {
         // remove \r\n and whitespace
         var query = new QueryDefinition(Regex.Replace(sql, @"\s+", " ").Trim());
 
         var results = new List<JObject>();
-        var iterator = _cosmosContainer.GetItemQueryIterator<dynamic>(query);
+        var iterator =
+            _cosmosContainer.GetItemQueryIterator<dynamic>(query, null, new QueryRequestOptions { MaxItemCount = -1 });
 
 
         while (iterator.HasMoreResults)
@@ -39,7 +38,7 @@ public class CosmosRepository : ICosmosRepository
             var documents = await iterator.ReadNextAsync();
             foreach (var document in documents)
             {
-                var jsonItem = new JObject { { "Id", document.id } };
+                var jsonItem = new JObject { { "id", document.id } };
 
                 foreach (var map in featureConfig.Mappings.Where(map => document[map.PropertyName] != null))
                     jsonItem.Add(map.OutputName, document[map.PropertyName]);
@@ -48,7 +47,50 @@ public class CosmosRepository : ICosmosRepository
             }
         }
 
-        return results;
+        var pageList = new PagedList<JObject>(results, -1, 100, null);
+
+        return new ApiOkResponse<PagedList<JObject>>(pageList);
+    }
+
+    public async Task<ApiOkResponse<PagedList<JObject>>> QuerySqlWithPaging(string sql, QueryConfig featureConfig,
+        int pageSize, int currentPageNumber, string? continuationToken = null)
+
+    {
+        // remove \r\n and whitespace
+        var query = new QueryDefinition(Regex.Replace(sql, @"\s+", " ").Trim());
+
+        string? token = null;
+
+        var results = new List<JObject>();
+        var iterator =
+            _cosmosContainer.GetItemQueryIterator<dynamic>(query, continuationToken,
+                new QueryRequestOptions { MaxItemCount = pageSize });
+
+
+        while (iterator.HasMoreResults)
+        {
+            var documents = await iterator.ReadNextAsync();
+            foreach (var document in documents)
+            {
+                var jsonItem = new JObject { { "id", document.id } };
+
+                foreach (var map in featureConfig.Mappings.Where(map => document[map.PropertyName] != null))
+                    jsonItem.Add(map.OutputName, document[map.PropertyName]);
+
+                results.Add(jsonItem);
+            }
+
+            if (documents.Count > 0)
+            {
+                token = documents.ContinuationToken;
+                break;
+            }
+        }
+
+        var pageList = new PagedList<JObject>(results, currentPageNumber , pageSize, token);
+
+
+        return new ApiOkResponse<PagedList<JObject>>(pageList);
     }
 
 
