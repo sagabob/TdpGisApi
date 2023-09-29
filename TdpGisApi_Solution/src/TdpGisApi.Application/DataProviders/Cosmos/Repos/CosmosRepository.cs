@@ -63,10 +63,13 @@ public class CosmosRepository : ICosmosRepository
 
         string? token = null;
 
+
         var results = new List<JObject>();
         var iterator =
             _cosmosContainer.GetItemQueryIterator<dynamic>(query,
-                string.IsNullOrEmpty(continuationToken) ? null : continuationToken,
+                string.IsNullOrEmpty(continuationToken)
+                    ? null
+                    : Encoding.UTF8.GetString(Convert.FromBase64String(continuationToken)),
                 new QueryRequestOptions { MaxItemCount = pageSize });
 
 
