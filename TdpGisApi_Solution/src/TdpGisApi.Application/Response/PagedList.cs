@@ -1,18 +1,20 @@
 ﻿namespace TdpGisApi.Application.Response;
 
-public class PagedList<T> : List<T>
+public class PagedList<T>
 {
-    public PagedList(List<T> items, int pageNumber, int pageSize, string? token)
+    public PagedList(List<T> items, int pageNumber, int pageSize, string? token )
     {
         CurrentPage = pageNumber;
         PageSize = pageSize;
         ContinuationToken = token;
-        AddRange(items);
+        Items = items;
     }
 
-    public int CurrentPage { get; set; }
+    public List<T> Items { get; private set; }
+    public int CurrentPage { get; private set; }
 
-    public int PageSize { get; set; }
+    public int PageSize { get; private set; }
 
     public string? ContinuationToken { get; set; }
+
 }

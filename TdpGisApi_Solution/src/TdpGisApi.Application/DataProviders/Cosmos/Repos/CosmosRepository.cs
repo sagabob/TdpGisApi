@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json.Linq;
 using TdpGisApi.Application.Models;
@@ -30,12 +31,13 @@ public class CosmosRepository : ICosmosRepository
 
         var results = new List<JObject>();
         var iterator =
-            _cosmosContainer.GetItemQueryIterator<dynamic>(query, null, new QueryRequestOptions { MaxItemCount = -1 });
+            _cosmosContainer.GetItemQueryIterator<dynamic>(query, null, new QueryRequestOptions { MaxItemCount = 100 });
 
 
         while (iterator.HasMoreResults)
         {
             var documents = await iterator.ReadNextAsync();
+
             foreach (var document in documents)
             {
                 var jsonItem = new JObject { { "id", document.id } };
@@ -63,13 +65,21 @@ public class CosmosRepository : ICosmosRepository
 
         var results = new List<JObject>();
         var iterator =
-            _cosmosContainer.GetItemQueryIterator<dynamic>(query, continuationToken,
+            _cosmosContainer.GetItemQueryIterator<dynamic>(query,
+                string.IsNullOrEmpty(continuationToken) ? null : continuationToken,
                 new QueryRequestOptions { MaxItemCount = pageSize });
 
 
         while (iterator.HasMoreResults)
         {
             var documents = await iterator.ReadNextAsync();
+            if (token != null)
+            {
+                token = documents.Count > 0 ? token : null;
+                break;
+            }
+
+
             foreach (var document in documents)
             {
                 var jsonItem = new JObject { { "id", document.id } };
@@ -81,13 +91,10 @@ public class CosmosRepository : ICosmosRepository
             }
 
             if (documents.Count > 0)
-            {
-                token = documents.ContinuationToken;
-                break;
-            }
+                token = Convert.ToBase64String(Encoding.UTF8.GetBytes(documents.ContinuationToken));
         }
 
-        var pageList = new PagedList<JObject>(results, currentPageNumber , pageSize, token);
+        var pageList = new PagedList<JObject>(results, currentPageNumber, pageSize, token);
 
 
         return new ApiOkResponse<PagedList<JObject>>(pageList);

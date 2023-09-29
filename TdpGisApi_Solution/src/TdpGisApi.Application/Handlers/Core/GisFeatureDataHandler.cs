@@ -41,7 +41,7 @@ public class GisFeatureDataHandler : IGisFeatureDataHandler
     }
 
 
-    public async Task<ApiOkResponse<PagedList<JObject>>> GetPagingFeatureDataByText(Guid featureId, string text, int pageSize, int pageNumber, string token)
+    public async Task<ApiOkResponse<PagedList<JObject>>> GetPagingFeatureDataByText(Guid featureId, string text, int pageSize, int pageNumber, string? token)
     {
         var featureInfo = (await _gisAppFactory.CreateAppFeatureData()).Features.FirstOrDefault(x => x.Id == featureId);
         switch (featureInfo)
