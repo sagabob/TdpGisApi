@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using TdpGisApi.Application.DataProviders.Cosmos;
+﻿using TdpGisApi.Application.DataProviders.Cosmos;
 using TdpGisApi.Application.Models;
 using TdpGisApi.Application.Response;
 
@@ -17,7 +16,7 @@ public class GisFeatureDataCosmosHandler : IGisFeatureDataCosmosHandler
         _cosmosRepositoryFactory = cosmosRepositoryFactory;
     }
 
-    public async Task<ApiOkResponse<PagedList<JObject>>> GetFeatureDataByText(QueryConfig featureInfo, string text)
+    public async Task<ApiOkResponse<FeatureCollection>> GetFeatureDataByText(QueryConfig featureInfo, string text)
     {
         var cosmosClient = _comosClientFactory.Create(featureInfo.Connection);
         var repos = _cosmosRepositoryFactory.CreateRepository(cosmosClient,
@@ -26,14 +25,15 @@ public class GisFeatureDataCosmosHandler : IGisFeatureDataCosmosHandler
 
         repos.GetContainer();
 
-        var querySql = $"SELECT TOP 100 * FROM c WHERE c.{featureInfo.QueryField} like '%{text}%' ";
+        var querySql = $"SELECT * FROM c WHERE c.{featureInfo.QueryField} like '%{text}%' ";
 
         var results = await repos.QuerySql(querySql, featureInfo);
 
         return results;
     }
 
-    public async Task<ApiOkResponse<PagedList<JObject>>> GetPagingFeatureDataByText(QueryConfig featureInfo, string text, int pageSize, int pageNumber, string? token)
+    public async Task<ApiOkResponse<FeatureCollection>> GetPagingFeatureDataByText(QueryConfig featureInfo, string text,
+        int pageSize, int pageNumber, string? token)
     {
         var cosmosClient = _comosClientFactory.Create(featureInfo.Connection);
         var repos = _cosmosRepositoryFactory.CreateRepository(cosmosClient,
@@ -42,7 +42,7 @@ public class GisFeatureDataCosmosHandler : IGisFeatureDataCosmosHandler
 
         repos.GetContainer();
 
-        var querySql = $"SELECT TOP 100 * FROM c WHERE c.{featureInfo.QueryField} like '%{text}%' ";
+        var querySql = $"SELECT * FROM c WHERE c.{featureInfo.QueryField} like '%{text}%' ";
 
         var results = await repos.QuerySqlWithPaging(querySql, featureInfo, pageSize, pageNumber, token);
 

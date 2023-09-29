@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using TdpGisApi.Application.Factory;
+﻿using TdpGisApi.Application.Factory;
 using TdpGisApi.Application.Models;
 using TdpGisApi.Application.Response;
 
@@ -16,7 +15,7 @@ public class GisFeatureDataHandler : IGisFeatureDataHandler
         _gisFeatureDataCosmosHandler = gisFeatureDataCosmosHandler;
     }
 
-    public async Task<ApiOkResponse<PagedList<JObject>>> GetFeatureDataByText(Guid featureId, string text)
+    public async Task<ApiOkResponse<FeatureCollection>> GetFeatureDataByText(Guid featureId, string text)
     {
         var featureInfo = (await _gisAppFactory.CreateAppFeatureData()).Features.FirstOrDefault(x => x.Id == featureId);
         switch (featureInfo)
@@ -41,7 +40,8 @@ public class GisFeatureDataHandler : IGisFeatureDataHandler
     }
 
 
-    public async Task<ApiOkResponse<PagedList<JObject>>> GetPagingFeatureDataByText(Guid featureId, string text, int pageSize, int pageNumber, string? token)
+    public async Task<ApiOkResponse<FeatureCollection>> GetPagingFeatureDataByText(Guid featureId, string text,
+        int pageSize, int pageNumber, string? token)
     {
         var featureInfo = (await _gisAppFactory.CreateAppFeatureData()).Features.FirstOrDefault(x => x.Id == featureId);
         switch (featureInfo)
@@ -52,7 +52,8 @@ public class GisFeatureDataHandler : IGisFeatureDataHandler
             {
                 try
                 {
-                    return await _gisFeatureDataCosmosHandler.GetPagingFeatureDataByText(featureInfo, text, pageSize,pageNumber, token);
+                    return await _gisFeatureDataCosmosHandler.GetPagingFeatureDataByText(featureInfo, text, pageSize,
+                        pageNumber, token);
                 }
                 catch (Exception e)
                 {

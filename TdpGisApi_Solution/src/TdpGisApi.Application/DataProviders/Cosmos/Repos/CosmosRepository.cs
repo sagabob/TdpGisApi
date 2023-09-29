@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json.Linq;
 using TdpGisApi.Application.Models;
@@ -23,7 +24,7 @@ public class CosmosRepository : ICosmosRepository
     }
 
 
-    public async Task<ApiOkResponse<PagedList<JObject>>> QuerySql(string sql, QueryConfig featureConfig)
+    public async Task<ApiOkResponse<FeatureCollection>> QuerySql(string sql, QueryConfig featureConfig)
 
     {
         // remove \r\n and whitespace
@@ -31,7 +32,7 @@ public class CosmosRepository : ICosmosRepository
 
         var results = new List<JObject>();
         var iterator =
-            _cosmosContainer.GetItemQueryIterator<dynamic>(query, null, new QueryRequestOptions { MaxItemCount = 100 });
+            _cosmosContainer.GetItemQueryIterator<dynamic>(query, null, new QueryRequestOptions { MaxItemCount = 50 });
 
 
         while (iterator.HasMoreResults)
@@ -40,21 +41,28 @@ public class CosmosRepository : ICosmosRepository
 
             foreach (var document in documents)
             {
-                var jsonItem = new JObject { { "id", document.id } };
+                var jsonFeature = new JObject { { "type", "Feature" } };
+
+                var jsonProperties = new JObject();
 
                 foreach (var map in featureConfig.Mappings.Where(map => document[map.PropertyName] != null))
-                    jsonItem.Add(map.OutputName, document[map.PropertyName]);
+                    if (map.PropertyType == PropertyType.Spatial)
+                        jsonFeature.Add(map.OutputName, document[map.PropertyName]);
+                    else
+                        jsonProperties.Add(map.OutputName, document[map.PropertyName]);
 
-                results.Add(jsonItem);
+                jsonFeature.Add("properties", jsonProperties);
+
+                results.Add(jsonFeature);
             }
         }
 
-        var pageList = new PagedList<JObject>(results, -1, 100, null);
+        var featureCollection = new FeatureCollection(featureConfig.Id, results, -1, 50, null);
 
-        return new ApiOkResponse<PagedList<JObject>>(pageList);
+        return new ApiOkResponse<FeatureCollection>(featureCollection);
     }
 
-    public async Task<ApiOkResponse<PagedList<JObject>>> QuerySqlWithPaging(string sql, QueryConfig featureConfig,
+    public async Task<ApiOkResponse<FeatureCollection>> QuerySqlWithPaging(string sql, QueryConfig featureConfig,
         int pageSize, int currentPageNumber, string? continuationToken = null)
 
     {
@@ -63,44 +71,50 @@ public class CosmosRepository : ICosmosRepository
 
         string? token = null;
 
+        var inputToken = string.IsNullOrEmpty(continuationToken)
+            ? null
+            : Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(continuationToken));
 
         var results = new List<JObject>();
         var iterator =
             _cosmosContainer.GetItemQueryIterator<dynamic>(query,
-                string.IsNullOrEmpty(continuationToken)
-                    ? null
-                    : Encoding.UTF8.GetString(Convert.FromBase64String(continuationToken)),
+                inputToken,
                 new QueryRequestOptions { MaxItemCount = pageSize });
 
 
         while (iterator.HasMoreResults)
         {
             var documents = await iterator.ReadNextAsync();
-            if (token != null)
-            {
-                token = documents.Count > 0 ? token : null;
-                break;
-            }
-
 
             foreach (var document in documents)
             {
-                var jsonItem = new JObject { { "id", document.id } };
+                var jsonFeature = new JObject { { "type", "Feature" } };
+
+                var jsonProperties = new JObject();
 
                 foreach (var map in featureConfig.Mappings.Where(map => document[map.PropertyName] != null))
-                    jsonItem.Add(map.OutputName, document[map.PropertyName]);
+                    if (map.PropertyType == PropertyType.Spatial)
+                        jsonFeature.Add(map.OutputName, document[map.PropertyName]);
+                    else
+                        jsonProperties.Add(map.OutputName, document[map.PropertyName]);
 
-                results.Add(jsonItem);
+                jsonFeature.Add("properties", jsonProperties);
+
+                results.Add(jsonFeature);
             }
 
             if (documents.Count > 0)
-                token = Convert.ToBase64String(Encoding.UTF8.GetBytes(documents.ContinuationToken));
+            {
+                token = !string.IsNullOrEmpty(documents.ContinuationToken)
+                    ? WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(documents.ContinuationToken))
+                    : null;
+                break;
+            }
         }
 
-        var pageList = new PagedList<JObject>(results, currentPageNumber, pageSize, token);
+        var featureCollection = new FeatureCollection(featureConfig.Id, results, currentPageNumber, pageSize, token);
 
-
-        return new ApiOkResponse<PagedList<JObject>>(pageList);
+        return new ApiOkResponse<FeatureCollection>(featureCollection);
     }
 
 

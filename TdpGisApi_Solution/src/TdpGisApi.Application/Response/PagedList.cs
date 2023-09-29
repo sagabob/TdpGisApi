@@ -2,7 +2,7 @@
 
 public class PagedList<T>
 {
-    public PagedList(List<T> items, int pageNumber, int pageSize, string? token )
+    public PagedList(List<T> items, int pageNumber, int pageSize, string? token)
     {
         CurrentPage = pageNumber;
         PageSize = pageSize;
@@ -16,5 +16,4 @@ public class PagedList<T>
     public int PageSize { get; private set; }
 
     public string? ContinuationToken { get; set; }
-
 }
