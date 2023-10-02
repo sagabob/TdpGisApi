@@ -9,4 +9,6 @@ public interface IGisFeatureDataCosmosHandler
 
     Task<ApiOkResponse<FeatureCollection>> GetPagingFeatureDataByText(QueryConfig featureInfo, string text,
         int pageSize, int pageNumber, string? token);
+
+    Task<ApiOkResponse<FeatureCollection>> GetAllFeatureData(QueryConfig featureInfo);
 }

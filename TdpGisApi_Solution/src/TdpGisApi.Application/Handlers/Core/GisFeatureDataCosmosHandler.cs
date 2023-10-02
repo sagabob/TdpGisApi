@@ -32,6 +32,22 @@ public class GisFeatureDataCosmosHandler : IGisFeatureDataCosmosHandler
         return results;
     }
 
+    public async Task<ApiOkResponse<FeatureCollection>> GetAllFeatureData(QueryConfig featureInfo)
+    {
+        var cosmosClient = _comosClientFactory.Create(featureInfo.Connection);
+        var repos = _cosmosRepositoryFactory.CreateRepository(cosmosClient,
+            featureInfo.Connection.DatabaseId,
+            featureInfo.CollectionName);
+
+        repos.GetContainer();
+
+        var querySql = $"SELECT * FROM c ORDER BY c.{featureInfo.QueryField}";
+
+        var results = await repos.QuerySql(querySql, featureInfo);
+
+        return results;
+    }
+
     public async Task<ApiOkResponse<FeatureCollection>> GetPagingFeatureDataByText(QueryConfig featureInfo, string text,
         int pageSize, int pageNumber, string? token)
     {

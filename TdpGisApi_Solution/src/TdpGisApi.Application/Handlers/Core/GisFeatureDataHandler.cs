@@ -39,6 +39,30 @@ public class GisFeatureDataHandler : IGisFeatureDataHandler
         }
     }
 
+    public async Task<ApiOkResponse<FeatureCollection>> GetAllFeatureData(Guid featureId)
+    {
+        var featureInfo = (await _gisAppFactory.CreateAppFeatureData()).Features.FirstOrDefault(x => x.Id == featureId);
+        switch (featureInfo)
+        {
+            case null:
+                throw new KeyNotFoundException("Not found the queried feature");
+            case { Connection.DbType: DbType.Cosmosdb }:
+            {
+                try
+                {
+                    return await _gisFeatureDataCosmosHandler.GetAllFeatureData(featureInfo);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+            default:
+                throw new NotImplementedException();
+        }
+    }
+
 
     public async Task<ApiOkResponse<FeatureCollection>> GetPagingFeatureDataByText(Guid featureId, string text,
         int pageSize, int pageNumber, string? token)
