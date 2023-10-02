@@ -95,7 +95,7 @@ public class DbService
         {
             Id = new Guid(),
             PropertyName = "Location",
-            OutputName = "geometries",
+            OutputName = "geometry",
             PropertyType = PropertyType.Spatial,
             ShowLevel = ShowLevel.Public
         };
@@ -156,7 +156,7 @@ public class DbService
         {
             Id = new Guid(),
             PropertyName = "Location",
-            OutputName = "geometries",
+            OutputName = "geometry",
             PropertyType = PropertyType.Spatial,
             ShowLevel = ShowLevel.Public
         };
@@ -202,7 +202,7 @@ public class DbService
         {
             Id = new Guid(),
             PropertyName = "Location",
-            OutputName = "geometries",
+            OutputName = "geometry",
             PropertyType = PropertyType.Spatial,
             ShowLevel = ShowLevel.Public
         };
@@ -256,7 +256,7 @@ public class DbService
         {
             Id = new Guid(),
             PropertyName = "Location",
-            OutputName = "geometries",
+            OutputName = "geometry",
             PropertyType = PropertyType.Spatial,
             ShowLevel = ShowLevel.Public
         };
