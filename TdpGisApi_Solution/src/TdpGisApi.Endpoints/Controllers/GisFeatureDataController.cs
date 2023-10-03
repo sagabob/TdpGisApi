@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using TdpGisApi.Application.Handlers;
 
 namespace TdpGisApi.Endpoints.Controllers;
@@ -39,5 +40,25 @@ public class GisFeatureDataController : ControllerBase
     {
         var result = await _gisFeatureDataHandler.GetAllFeatureData(feature);
         return Ok(result);
+    }
+
+
+    [HttpPost]
+    [Route("allspatialdata/{feature:Guid}")]
+    public async Task<IActionResult> GetAllSpatialData(Guid feature, [FromBody] string boundaries)
+    {
+        var joBoundaries = JObject.Parse(boundaries);
+        var results = await _gisFeatureDataHandler.GetSpatialData(feature, joBoundaries);
+        return Ok(results);
+    }
+
+
+    [HttpPost]
+    [Route("allspatialdatasinglebounary/{feature:Guid}")]
+    public async Task<IActionResult> GetAllSpatialDataSingleBoundary(Guid feature, [FromBody] string boundaries)
+    {
+        var joBoundaries = JObject.Parse(boundaries);
+        var results = await _gisFeatureDataHandler.GetSpatialDataSingleBoundary(feature, joBoundaries);
+        return Ok(results);
     }
 }

@@ -1,14 +1,19 @@
-﻿using TdpGisApi.Application.Models;
+﻿using Newtonsoft.Json.Linq;
+using TdpGisApi.Application.Models;
 using TdpGisApi.Application.Response;
 
 namespace TdpGisApi.Application.Handlers;
 
 public interface IGisFeatureDataCosmosHandler
 {
-    Task<ApiOkResponse<FeatureCollection>> GetFeatureDataByText(QueryConfig featureInfo, string text);
+    Task<FeatureCollection> GetFeatureDataByText(QueryConfig featureInfo, string text);
 
-    Task<ApiOkResponse<FeatureCollection>> GetPagingFeatureDataByText(QueryConfig featureInfo, string text,
+    Task<FeatureCollection> GetPagingFeatureDataByText(QueryConfig featureInfo, string text,
         int pageSize, int pageNumber, string? token);
 
-    Task<ApiOkResponse<FeatureCollection>> GetAllFeatureData(QueryConfig featureInfo);
+    Task<FeatureCollection> GetAllFeatureData(QueryConfig featureInfo);
+
+    Task<Dictionary<string, FeatureCollection>> GetSpatialData(QueryConfig featureInfo, JObject boundaries);
+
+    Task<FeatureCollection> GetSpatialDataSingleBoundary(QueryConfig featureInfo, JObject boundaries);
 }

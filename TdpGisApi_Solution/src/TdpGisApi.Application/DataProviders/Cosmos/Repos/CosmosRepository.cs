@@ -24,7 +24,7 @@ public class CosmosRepository : ICosmosRepository
     }
 
 
-    public async Task<ApiOkResponse<FeatureCollection>> QuerySql(string sql, QueryConfig featureConfig)
+    public async Task<FeatureCollection> QuerySql(string sql, QueryConfig featureConfig)
 
     {
         // remove \r\n and whitespace
@@ -59,10 +59,10 @@ public class CosmosRepository : ICosmosRepository
 
         var featureCollection = new FeatureCollection(featureConfig.Id, results, -1, 50, null);
 
-        return new ApiOkResponse<FeatureCollection>(featureCollection);
+        return featureCollection;
     }
 
-    public async Task<ApiOkResponse<FeatureCollection>> QuerySqlWithPaging(string sql, QueryConfig featureConfig,
+    public async Task<FeatureCollection> QuerySqlWithPaging(string sql, QueryConfig featureConfig,
         int pageSize, int currentPageNumber, string? continuationToken = null)
 
     {
@@ -114,7 +114,7 @@ public class CosmosRepository : ICosmosRepository
 
         var featureCollection = new FeatureCollection(featureConfig.Id, results, currentPageNumber, pageSize, token);
 
-        return new ApiOkResponse<FeatureCollection>(featureCollection);
+        return featureCollection;
     }
 
 

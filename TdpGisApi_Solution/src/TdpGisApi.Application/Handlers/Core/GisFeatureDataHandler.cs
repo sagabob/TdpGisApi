@@ -1,4 +1,5 @@
-﻿using TdpGisApi.Application.Factory;
+﻿using Newtonsoft.Json.Linq;
+using TdpGisApi.Application.Factory;
 using TdpGisApi.Application.Models;
 using TdpGisApi.Application.Response;
 
@@ -26,7 +27,8 @@ public class GisFeatureDataHandler : IGisFeatureDataHandler
             {
                 try
                 {
-                    return await _gisFeatureDataCosmosHandler.GetFeatureDataByText(featureInfo, text);
+                    var results = await _gisFeatureDataCosmosHandler.GetFeatureDataByText(featureInfo, text);
+                    return new ApiOkResponse<FeatureCollection>(results);
                 }
                 catch (Exception e)
                 {
@@ -50,7 +52,8 @@ public class GisFeatureDataHandler : IGisFeatureDataHandler
             {
                 try
                 {
-                    return await _gisFeatureDataCosmosHandler.GetAllFeatureData(featureInfo);
+                    var results = await _gisFeatureDataCosmosHandler.GetAllFeatureData(featureInfo);
+                    return new ApiOkResponse<FeatureCollection>(results);
                 }
                 catch (Exception e)
                 {
@@ -76,8 +79,67 @@ public class GisFeatureDataHandler : IGisFeatureDataHandler
             {
                 try
                 {
-                    return await _gisFeatureDataCosmosHandler.GetPagingFeatureDataByText(featureInfo, text, pageSize,
+                    var results = await _gisFeatureDataCosmosHandler.GetPagingFeatureDataByText(featureInfo, text,
+                        pageSize,
                         pageNumber, token);
+
+                    return new ApiOkResponse<FeatureCollection>(results);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+            default:
+                throw new NotImplementedException();
+        }
+    }
+
+
+    public async Task<ApiOkResponse<Dictionary<string, FeatureCollection>>> GetSpatialData(Guid featureId,
+        JObject boundaries)
+    {
+        var featureInfo = (await _gisAppFactory.CreateAppFeatureData()).Features.FirstOrDefault(x => x.Id == featureId);
+        switch (featureInfo)
+        {
+            case null:
+                throw new KeyNotFoundException("Not found the queried feature");
+            case { Connection.DbType: DbType.Cosmosdb }:
+            {
+                try
+                {
+                    var results = await _gisFeatureDataCosmosHandler.GetSpatialData(featureInfo, boundaries);
+
+                    return new ApiOkResponse<Dictionary<string, FeatureCollection>>(results);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+            default:
+                throw new NotImplementedException();
+        }
+    }
+
+    public async Task<ApiOkResponse<FeatureCollection>> GetSpatialDataSingleBoundary(Guid featureId,
+        JObject boundaries)
+    {
+        var featureInfo = (await _gisAppFactory.CreateAppFeatureData()).Features.FirstOrDefault(x => x.Id == featureId);
+        switch (featureInfo)
+        {
+            case null:
+                throw new KeyNotFoundException("Not found the queried feature");
+            case { Connection.DbType: DbType.Cosmosdb }:
+            {
+                try
+                {
+                    var results =
+                        await _gisFeatureDataCosmosHandler.GetSpatialDataSingleBoundary(featureInfo, boundaries);
+
+                    return new ApiOkResponse<FeatureCollection>(results);
                 }
                 catch (Exception e)
                 {

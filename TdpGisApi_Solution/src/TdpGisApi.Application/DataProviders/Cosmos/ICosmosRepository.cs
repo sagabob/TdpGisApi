@@ -5,8 +5,8 @@ namespace TdpGisApi.Application.DataProviders.Cosmos;
 
 public interface ICosmosRepository
 {
-    Task<ApiOkResponse<FeatureCollection>> QuerySql(string sql, QueryConfig featureConfig);
+    Task<FeatureCollection> QuerySql(string sql, QueryConfig featureConfig);
 
-    Task<ApiOkResponse<FeatureCollection>> QuerySqlWithPaging(string sql, QueryConfig featureConfig,
+    Task<FeatureCollection> QuerySqlWithPaging(string sql, QueryConfig featureConfig,
         int pageSize, int currentPageNumber, string? continuationToken = null);
 }

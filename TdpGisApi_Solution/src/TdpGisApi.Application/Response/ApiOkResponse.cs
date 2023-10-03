@@ -5,8 +5,8 @@ public class ApiOkResponse<TResult> : ApiBaseResponse
     public ApiOkResponse(TResult result)
         : base(true)
     {
-        Result = result;
+        Results = result;
     }
 
-    public TResult Result { get; set; }
+    public TResult Results { get; set; }
 }

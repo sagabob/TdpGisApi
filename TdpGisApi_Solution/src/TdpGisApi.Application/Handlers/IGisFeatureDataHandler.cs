@@ -1,4 +1,5 @@
-﻿using TdpGisApi.Application.Response;
+﻿using Newtonsoft.Json.Linq;
+using TdpGisApi.Application.Response;
 
 namespace TdpGisApi.Application.Handlers;
 
@@ -10,4 +11,10 @@ public interface IGisFeatureDataHandler
         int pageNumber, string? token);
 
     Task<ApiOkResponse<FeatureCollection>> GetAllFeatureData(Guid featureId);
+
+    Task<ApiOkResponse<Dictionary<string, FeatureCollection>>> GetSpatialData(Guid featureId,
+        JObject boundaries);
+
+    Task<ApiOkResponse<FeatureCollection>> GetSpatialDataSingleBoundary(Guid featureId,
+        JObject boundaries);
 }
