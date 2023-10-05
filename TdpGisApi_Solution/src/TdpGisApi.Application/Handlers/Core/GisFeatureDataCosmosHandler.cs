@@ -103,7 +103,6 @@ public class GisFeatureDataCosmosHandler : IGisFeatureDataCosmosHandler
 
         var results = await repos.QuerySql(querySql, featureInfo);
 
-
         return results;
     }
 }
