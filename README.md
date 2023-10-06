@@ -16,3 +16,12 @@
 
   </p>
 </p>
+
+## Contact
+[![LinkedIn][linkedin-shield]][linkedin-url]<br/>
+Bob Pham - bobpham.tdp@gmail.com<br/>
+
+
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/in/bob-pham-93937973/
+[tdp-logo]: tdp-logo.png
