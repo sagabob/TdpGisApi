@@ -7,19 +7,19 @@ namespace TdpGisApi.Application.Handlers.Core;
 
 public class GisFeatureDataCosmosHandler : IGisFeatureDataCosmosHandler
 {
-    private readonly IComosClientFactory _comosClientFactory;
+    private readonly IComosClientFactory _cosmosClientFactory;
     private readonly ICosmosRepositoryFactory _cosmosRepositoryFactory;
 
-    public GisFeatureDataCosmosHandler(IComosClientFactory comosClientFactory,
+    public GisFeatureDataCosmosHandler(IComosClientFactory cosmosClientFactory,
         ICosmosRepositoryFactory cosmosRepositoryFactory)
     {
-        _comosClientFactory = comosClientFactory;
+        _cosmosClientFactory = cosmosClientFactory;
         _cosmosRepositoryFactory = cosmosRepositoryFactory;
     }
 
     public async Task<FeatureCollection> GetFeatureDataByText(QueryConfig featureInfo, string text)
     {
-        var cosmosClient = _comosClientFactory.Create(featureInfo.Connection);
+        var cosmosClient = _cosmosClientFactory.Create(featureInfo.Connection);
         var repos = _cosmosRepositoryFactory.CreateRepository(cosmosClient,
             featureInfo.Connection.DatabaseId,
             featureInfo.CollectionName);
@@ -35,7 +35,7 @@ public class GisFeatureDataCosmosHandler : IGisFeatureDataCosmosHandler
 
     public async Task<FeatureCollection> GetAllFeatureData(QueryConfig featureInfo)
     {
-        var cosmosClient = _comosClientFactory.Create(featureInfo.Connection);
+        var cosmosClient = _cosmosClientFactory.Create(featureInfo.Connection);
         var repos = _cosmosRepositoryFactory.CreateRepository(cosmosClient,
             featureInfo.Connection.DatabaseId,
             featureInfo.CollectionName);
@@ -52,7 +52,7 @@ public class GisFeatureDataCosmosHandler : IGisFeatureDataCosmosHandler
     public async Task<FeatureCollection> GetPagingFeatureDataByText(QueryConfig featureInfo, string text,
         int pageSize, int pageNumber, string? token)
     {
-        var cosmosClient = _comosClientFactory.Create(featureInfo.Connection);
+        var cosmosClient = _cosmosClientFactory.Create(featureInfo.Connection);
         var repos = _cosmosRepositoryFactory.CreateRepository(cosmosClient,
             featureInfo.Connection.DatabaseId,
             featureInfo.CollectionName);
@@ -68,7 +68,7 @@ public class GisFeatureDataCosmosHandler : IGisFeatureDataCosmosHandler
 
     public async Task<Dictionary<string, FeatureCollection>> GetSpatialData(QueryConfig featureInfo, JObject boundaries)
     {
-        var cosmosClient = _comosClientFactory.Create(featureInfo.Connection);
+        var cosmosClient = _cosmosClientFactory.Create(featureInfo.Connection);
         var repos = _cosmosRepositoryFactory.CreateRepository(cosmosClient,
             featureInfo.Connection.DatabaseId,
             featureInfo.CollectionName);
@@ -92,7 +92,7 @@ public class GisFeatureDataCosmosHandler : IGisFeatureDataCosmosHandler
 
     public async Task<FeatureCollection> GetSpatialDataSingleBoundary(QueryConfig featureInfo, JObject boundaries)
     {
-        var cosmosClient = _comosClientFactory.Create(featureInfo.Connection);
+        var cosmosClient = _cosmosClientFactory.Create(featureInfo.Connection);
         var repos = _cosmosRepositoryFactory.CreateRepository(cosmosClient,
             featureInfo.Connection.DatabaseId,
             featureInfo.CollectionName);
