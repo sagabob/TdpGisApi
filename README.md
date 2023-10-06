@@ -26,7 +26,7 @@
 ## About the project
 A dotnet-core WebApi which provides Restful services on text & spatial searches for configured geospatial features. The searchable features can be from Cosmosdb, Mongodb & PostgreSQL (work in progress, only Cosmosdb works atm). 
 
-For a given feature, we configure the searchable field, its geometry field and propreties that we want to return and output names. 
+For a given feature, we configure the searchable field, its geometry field and propreties that we want to return and their output names. 
 
 ## Built With
 * DotNet-Core 7.0
@@ -34,6 +34,11 @@ For a given feature, we configure the searchable field, its geometry field and p
 * Entity Framework Core 7.0
 * CosmosDb SDK 3.0
 
+## Roadmap
+The application will be extended with the following features
+* Add a frontend to consume these features.
+* Add an admin page to provide an easy feature configuration, authentication/authorization will be implemented.
+* Add Kubernetes.
 
 
 ## Contact
