@@ -5,8 +5,10 @@ namespace TdpGisApi.Application.DataProviders.Cosmos.Factory;
 
 public class CosmosRepositoryFactory : ICosmosRepositoryFactory
 {
-    public CosmosRepository CreateRepository(CosmosClient cosmosClient, string databaseId, string collectionName)
+    public CosmosRepository CreateRepository(ICosmosQueryHelpers cosmosQueryHelpers, CosmosClient cosmosClient,
+        string databaseId, string collectionName
+    )
     {
-        return new CosmosRepository(cosmosClient, databaseId, collectionName);
+        return new CosmosRepository(cosmosQueryHelpers, cosmosClient, databaseId, collectionName);
     }
 }

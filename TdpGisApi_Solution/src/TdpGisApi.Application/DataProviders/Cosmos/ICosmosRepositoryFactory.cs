@@ -5,5 +5,6 @@ namespace TdpGisApi.Application.DataProviders.Cosmos;
 
 public interface ICosmosRepositoryFactory
 {
-    CosmosRepository CreateRepository(CosmosClient cosmosClient, string databaseId, string collectionName);
+    CosmosRepository CreateRepository(ICosmosQueryHelpers cosmosQueryHelpers, CosmosClient cosmosClient,
+        string databaseId, string collectionName);
 }

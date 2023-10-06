@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TdpGisApi.Application.DataProviders.Cosmos;
 using TdpGisApi.Application.DataProviders.Cosmos.Factory;
+using TdpGisApi.Application.DataProviders.Cosmos.Helpers;
 using TdpGisApi.Application.Handlers;
 using TdpGisApi.Application.Handlers.Core;
 using TdpGisApi.Application.Mappers;
@@ -28,6 +29,7 @@ public static class ApplicationExtensions
 
     public static IServiceCollection RegisterComosComponents(this IServiceCollection services)
     {
+        services.AddSingleton<ICosmosQueryHelpers, CosmosQueryHelpers>();
         services.AddSingleton<IComosClientFactory, ComosClientFactory>();
         services.AddSingleton<ICosmosRepositoryFactory, CosmosRepositoryFactory>();
         return services;
