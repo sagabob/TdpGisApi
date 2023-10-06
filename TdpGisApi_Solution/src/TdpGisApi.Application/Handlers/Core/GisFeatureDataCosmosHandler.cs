@@ -63,7 +63,7 @@ public class GisFeatureDataCosmosHandler : IGisFeatureDataCosmosHandler
 
         var querySql = $"SELECT * FROM c WHERE c.{featureInfo.QueryField} like '%{text}%'";
 
-        var querySqlTotalCount = $"SELECT * FROM c WHERE c.{featureInfo.QueryField} like '%{text}%'";
+        var querySqlTotalCount = $"SELECT Count(1) FROM c WHERE c.{featureInfo.QueryField} like '%{text}%'";
 
         var results =
             await repos.QuerySqlWithPaging(querySql, querySqlTotalCount, featureInfo, pageSize, pageNumber, token);
