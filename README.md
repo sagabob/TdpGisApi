@@ -33,6 +33,8 @@ For a given feature, we configure the searchable field, its geometry field and p
 * WebAPI
 * Entity Framework Core 7.0
 * CosmosDb SDK 3.0
+* Docker
+* Deployed to Azure WebApp for containers.
 
 ## Roadmap
 The application will be extended with the following features
