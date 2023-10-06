@@ -16,8 +16,8 @@
 
   </p>
 </p>
-## Table of Contents
 
+## Table of Contents
 * [About the Project](#about-the-project)
 * [Built with](#built-with)
 * [Roadmap](#roadmap)
