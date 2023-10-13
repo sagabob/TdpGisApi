@@ -39,7 +39,7 @@ public class DbService
             .Attach();
     }
 
-    public async Task RunSample()
+    public async Task ImportCleanSamples()
     {
         await RecreateDatabase();
 
@@ -47,6 +47,7 @@ public class DbService
 
         await AddItemsFromDefaultContext(defaultContext);
     }
+
 
     private async Task AddItemsFromDefaultContext(CosmosGisAppContext defaultContext)
     {
@@ -296,7 +297,54 @@ public class DbService
             ShowLevel = ShowLevel.Public,
             GeometryType = GeometryType.Polygon
         };
+
+
+        var ward1 = new PropertyOutput
+        {
+            Id = new Guid(),
+            PropertyName = "WardNameDescription",
+            OutputName = "title",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
+        };
+
+        var ward2 = new PropertyOutput
+        {
+            Id = new Guid(),
+            PropertyName = "WardID",
+            OutputName = "wardId",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
+        };
+
+        var ward3 = new PropertyOutput
+        {
+            Id = new Guid(),
+            PropertyName = "Location",
+            OutputName = "geometry",
+            PropertyType = PropertyType.Spatial,
+            ShowLevel = ShowLevel.Public
+        };
+
+
+        var ward = new QueryConfig
+        {
+            Id = new Guid(),
+            Name = "Wards",
+            DisplayName = "Wards",
+            CollectionName = "Wards",
+            PartitionKey = "WardID",
+            Description = "Wards in CC",
+            Connection = conn,
+            QueryType = QueryType.Text,
+            QueryField = "WardNameDescription",
+            Mappings = new List<PropertyOutput> { ward1, ward2, ward3 },
+            IsDisabled = false,
+            ShowLevel = ShowLevel.Public,
+            GeometryType = GeometryType.Polygon
+        };
         defaultContext.Add(conn);
+        defaultContext.Add(ward);
         defaultContext.Add(parkFeature);
         defaultContext.Add(placeFeature);
         defaultContext.Add(streetAddressFeature);

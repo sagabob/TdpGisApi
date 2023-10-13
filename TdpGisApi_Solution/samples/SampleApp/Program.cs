@@ -35,7 +35,7 @@ await using var serviceProvider = services.BuildServiceProvider();
 
 var transportService = serviceProvider.GetRequiredService<DbService>();
 
-await transportService.RunSample();
+await transportService.ImportCleanSamples();
 
 Console.WriteLine();
 Console.WriteLine("Done. Press ENTER to quit.");
