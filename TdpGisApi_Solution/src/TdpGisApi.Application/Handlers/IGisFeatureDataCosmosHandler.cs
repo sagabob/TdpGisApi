@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-using TdpGisApi.Application.Models;
+using TdpGisApi.Application.Models.Core;
 using TdpGisApi.Application.Response;
 
 namespace TdpGisApi.Application.Handlers;
@@ -12,6 +12,8 @@ public interface IGisFeatureDataCosmosHandler
         int pageSize, int pageNumber, string? token);
 
     Task<FeatureCollection> GetAllFeatureData(QueryConfig featureInfo);
+
+    Task<FeatureCollection> GetAllLayerData(FeatureLayer featureInfo);
 
     Task<Dictionary<string, FeatureCollection>> GetSpatialData(QueryConfig featureInfo, JObject boundaries);
 

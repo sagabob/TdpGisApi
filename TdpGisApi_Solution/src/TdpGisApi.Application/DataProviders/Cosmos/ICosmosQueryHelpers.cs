@@ -8,5 +8,5 @@ public interface ICosmosQueryHelpers
 {
     QueryDefinition GetQueryDefinition(string sql);
 
-    JObject OutputSingleFeatureMapping(dynamic outputFeature, QueryConfig featureConfig);
+    JObject OutputSingleFeatureMapping(dynamic outputFeature, IPropertyMapping featureConfig);
 }

@@ -3,7 +3,7 @@ using Newtonsoft.Json.Serialization;
 using TdpGisApi.Application.Configuration;
 using TdpGisApi.Application.Extensions;
 using TdpGisApi.Application.Factory;
-using TdpGisApi.Application.Models;
+using TdpGisApi.Application.Models.Core;
 using TdpGisApi.Endpoints.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);

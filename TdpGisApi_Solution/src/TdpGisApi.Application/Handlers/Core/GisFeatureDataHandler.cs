@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using TdpGisApi.Application.Factory;
-using TdpGisApi.Application.Models;
+using TdpGisApi.Application.Models.Core;
 using TdpGisApi.Application.Response;
 
 namespace TdpGisApi.Application.Handlers.Core;
@@ -53,6 +53,31 @@ public class GisFeatureDataHandler : IGisFeatureDataHandler
                 try
                 {
                     var results = await _gisFeatureDataCosmosHandler.GetAllFeatureData(featureInfo);
+                    return new ApiOkResponse<FeatureCollection>(results);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+            default:
+                throw new NotImplementedException();
+        }
+    }
+
+    public async Task<ApiOkResponse<FeatureCollection>> GetAllLayerData(Guid layerId)
+    {
+        var layerInfo = (await _gisAppFactory.CreateAppFeatureData()).Layers.FirstOrDefault(x => x.Id == layerId);
+        switch (layerInfo)
+        {
+            case null:
+                throw new KeyNotFoundException("Not found the layer");
+            case { Connection.DbType: DbType.Cosmosdb }:
+            {
+                try
+                {
+                    var results = await _gisFeatureDataCosmosHandler.GetAllLayerData(layerInfo);
                     return new ApiOkResponse<FeatureCollection>(results);
                 }
                 catch (Exception e)

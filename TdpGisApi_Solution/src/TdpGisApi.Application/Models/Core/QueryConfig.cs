@@ -1,8 +1,10 @@
-﻿namespace TdpGisApi.Application.Models;
+﻿namespace TdpGisApi.Application.Models.Core;
 
-public class FeatureLayer
+public class QueryConfig : IPropertyMapping
 {
-    public Guid Id { get; set; }
+    public required QueryType QueryType { get; set; }
+
+    public required string QueryField { get; set; }
 
     public required string Name { get; set; }
 
@@ -14,8 +16,6 @@ public class FeatureLayer
 
     public string? Description { get; set; }
 
-    public required List<PropertyOutput> Mappings { get; set; }
-
     public required ConnectionObject Connection { get; set; }
 
     public GeometryType GeometryType { get; set; }
@@ -23,4 +23,8 @@ public class FeatureLayer
     public required bool IsDisabled { get; set; }
 
     public required ShowLevel ShowLevel { get; set; }
+
+    public Guid Id { get; set; }
+
+    public required List<PropertyOutput> Mappings { get; set; }
 }

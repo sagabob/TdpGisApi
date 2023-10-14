@@ -12,6 +12,8 @@ public interface IGisFeatureDataHandler
 
     Task<ApiOkResponse<FeatureCollection>> GetAllFeatureData(Guid featureId);
 
+    Task<ApiOkResponse<FeatureCollection>> GetAllLayerData(Guid layerId);
+
     Task<ApiOkResponse<Dictionary<string, FeatureCollection>>> GetSpatialData(Guid featureId,
         JObject boundaries);
 

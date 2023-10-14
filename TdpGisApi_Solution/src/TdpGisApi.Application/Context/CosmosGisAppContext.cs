@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TdpGisApi.Application.Models;
+using TdpGisApi.Application.Models.Core;
 
 namespace TdpGisApi.Application.Context;
 

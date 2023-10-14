@@ -2,6 +2,7 @@
 using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json.Linq;
 using TdpGisApi.Application.Models;
+using TdpGisApi.Application.Models.Core;
 
 namespace TdpGisApi.Application.DataProviders.Cosmos.Helpers;
 
@@ -12,7 +13,7 @@ public class CosmosQueryHelpers : ICosmosQueryHelpers
         return new QueryDefinition(Regex.Replace(sql, @"\s+", " ").Trim());
     }
 
-    public JObject OutputSingleFeatureMapping(dynamic outputFeature, QueryConfig featureConfig)
+    public JObject OutputSingleFeatureMapping(dynamic outputFeature, IPropertyMapping featureConfig)
     {
         var jsonFeature = new JObject { { "type", "Feature" } };
 

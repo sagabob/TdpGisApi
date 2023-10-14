@@ -28,4 +28,18 @@ public class GisFeatureInfoHandler : IGisFeatureInfoHandler
         var featureLite = _mapper.Map<List<QueryConfigLite>>(features.Features);
         return featureLite;
     }
+
+    public async Task<List<FeatureLayerDto>> GetLayerDtos()
+    {
+        var features = await _gisAppFactory.CreateAppFeatureData();
+        var featureDto = _mapper.Map<List<FeatureLayerDto>>(features.Layers);
+        return featureDto;
+    }
+
+    public async Task<List<FeatureLayerLite>> GetLayerLite()
+    {
+        var features = await _gisAppFactory.CreateAppFeatureData();
+        var featureLite = _mapper.Map<List<FeatureLayerLite>>(features.Layers);
+        return featureLite;
+    }
 }

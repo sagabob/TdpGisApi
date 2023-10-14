@@ -1,4 +1,4 @@
-﻿namespace TdpGisApi.Application.Models;
+﻿namespace TdpGisApi.Application.Models.Core;
 
 public enum ConnectionType
 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TdpGisApi.Application.Models;
+using TdpGisApi.Application.Models.Core;
 
 namespace TdpGisApi.Application.Context;
 

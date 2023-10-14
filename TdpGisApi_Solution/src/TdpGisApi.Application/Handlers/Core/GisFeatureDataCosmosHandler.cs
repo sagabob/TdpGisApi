@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using TdpGisApi.Application.DataProviders.Cosmos;
-using TdpGisApi.Application.Models;
+using TdpGisApi.Application.Models.Core;
 using TdpGisApi.Application.Response;
 
 namespace TdpGisApi.Application.Handlers.Core;
@@ -45,6 +45,22 @@ public class GisFeatureDataCosmosHandler : IGisFeatureDataCosmosHandler
         repos.GetContainer();
 
         var querySql = $"SELECT * FROM c ORDER BY c.{featureInfo.QueryField}";
+
+        var results = await repos.QuerySql(querySql, featureInfo);
+
+        return results;
+    }
+
+    public async Task<FeatureCollection> GetAllLayerData(FeatureLayer featureInfo)
+    {
+        var cosmosClient = _cosmosClientFactory.Create(featureInfo.Connection);
+        var repos = _cosmosRepositoryFactory.CreateRepository(_cosmosQueryHelpers, cosmosClient,
+            featureInfo.Connection.DatabaseId,
+            featureInfo.CollectionName);
+
+        repos.GetContainer();
+
+        var querySql = "SELECT * FROM c ";
 
         var results = await repos.QuerySql(querySql, featureInfo);
 

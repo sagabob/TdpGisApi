@@ -33,4 +33,23 @@ public class GisFeatureInfoController : ControllerBase
 
         return Ok(featureLite);
     }
+
+    [HttpGet]
+    [Route("layerinstances")]
+    public async Task<IActionResult> LayerInstances()
+    {
+        var featureDto = await _gisFeatureInfoHandler.GetLayerDtos();
+
+        return Ok(featureDto);
+    }
+
+
+    [HttpGet]
+    [Route("layers")]
+    public async Task<IActionResult> Layers()
+    {
+        var featureLite = await _gisFeatureInfoHandler.GetLayerLite();
+
+        return Ok(featureLite);
+    }
 }

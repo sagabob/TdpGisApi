@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json.Linq;
 using TdpGisApi.Application.Models;
+using TdpGisApi.Application.Models.Core;
 using TdpGisApi.Application.Response;
 
 namespace TdpGisApi.Application.DataProviders.Cosmos.Repos;
@@ -26,8 +27,7 @@ public class CosmosRepository : ICosmosRepository
         _collectionName = collectionName;
     }
 
-    public async Task<FeatureCollection> QuerySql(string sql, QueryConfig featureConfig)
-
+    public async Task<FeatureCollection> QuerySql(string sql, IPropertyMapping featureConfig)
     {
         var query = _queryHelpers.GetQueryDefinition(sql);
 
@@ -48,6 +48,7 @@ public class CosmosRepository : ICosmosRepository
 
         return featureCollection;
     }
+
 
     public async Task<FeatureCollection> QuerySqlWithPaging(string sql, string totalCountSql, QueryConfig featureConfig,
         int pageSize, int currentPageNumber, string? continuationToken = null)

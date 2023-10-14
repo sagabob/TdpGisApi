@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using TdpGisApi.Application.Context;
-using TdpGisApi.Application.Models;
+using TdpGisApi.Application.Models.Core;
 
 namespace SampleApp;
 
@@ -67,6 +67,15 @@ public class DbService
             IsDisabled = false
         };
 
+        var idProperty = new PropertyOutput
+        {
+            Id = new Guid(),
+            PropertyName = "id",
+            OutputName = "id",
+            PropertyType = PropertyType.Normal,
+            ShowLevel = ShowLevel.Public
+        };
+
         var park1 = new PropertyOutput
         {
             Id = new Guid(),
@@ -75,6 +84,7 @@ public class DbService
             PropertyType = PropertyType.Normal,
             ShowLevel = ShowLevel.Public
         };
+
         var park2 = new PropertyOutput
         {
             Id = new Guid(),
@@ -112,7 +122,7 @@ public class DbService
             Connection = conn,
             QueryType = QueryType.Text,
             QueryField = "ParkName",
-            Mappings = new List<PropertyOutput> { park1, park2, park3, park4 },
+            Mappings = new List<PropertyOutput> { idProperty, park1, park2, park3, park4 },
             IsDisabled = false,
             ShowLevel = ShowLevel.Public,
             GeometryType = GeometryType.Polygon
@@ -127,7 +137,7 @@ public class DbService
             PartitionKey = "Locality",
             Description = "Parks in CC",
             Connection = conn,
-            Mappings = new List<PropertyOutput> { park1, park2, park3, park4 },
+            Mappings = new List<PropertyOutput> { idProperty, park1, park4 },
             IsDisabled = false,
             ShowLevel = ShowLevel.Public,
             GeometryType = GeometryType.Polygon
@@ -188,7 +198,7 @@ public class DbService
             Connection = conn,
             QueryType = QueryType.Text,
             QueryField = "StreetAddress",
-            Mappings = new List<PropertyOutput> { sta1, sta2, sta3, sta4, sta5 },
+            Mappings = new List<PropertyOutput> { idProperty, sta1, sta2, sta3, sta4, sta5 },
             IsDisabled = false,
             ShowLevel = ShowLevel.Public,
             GeometryType = GeometryType.Point
@@ -234,7 +244,7 @@ public class DbService
             Connection = conn,
             QueryType = QueryType.Text,
             QueryField = "PlaceName",
-            Mappings = new List<PropertyOutput> { place1, place2, place3 },
+            Mappings = new List<PropertyOutput> { idProperty, place1, place2, place3 },
             IsDisabled = false,
             ShowLevel = ShowLevel.Public,
             GeometryType = GeometryType.Point
@@ -307,7 +317,7 @@ public class DbService
             QueryType = QueryType.Text,
             QueryField = "StreetAddress",
             Mappings = new List<PropertyOutput>
-                { ratingUnit1, ratingUnit2, ratingUnit3, ratingUnit4, ratingUnit5, ratingUnit6 },
+                { idProperty, ratingUnit1, ratingUnit2, ratingUnit3, ratingUnit4, ratingUnit5, ratingUnit6 },
             IsDisabled = false,
             ShowLevel = ShowLevel.Public,
             GeometryType = GeometryType.Polygon
@@ -323,16 +333,8 @@ public class DbService
             ShowLevel = ShowLevel.Public
         };
 
-        var ward2 = new PropertyOutput
-        {
-            Id = new Guid(),
-            PropertyName = "WardID",
-            OutputName = "wardId",
-            PropertyType = PropertyType.Normal,
-            ShowLevel = ShowLevel.Public
-        };
 
-        var ward3 = new PropertyOutput
+        var ward2 = new PropertyOutput
         {
             Id = new Guid(),
             PropertyName = "Location",
@@ -351,7 +353,7 @@ public class DbService
             PartitionKey = "WardID",
             Description = "Wards in CC",
             Connection = conn,
-            Mappings = new List<PropertyOutput> { ward1, ward2, ward3 },
+            Mappings = new List<PropertyOutput> { idProperty, ward1, ward2 },
             IsDisabled = false,
             ShowLevel = ShowLevel.Public,
             GeometryType = GeometryType.Polygon
@@ -360,10 +362,12 @@ public class DbService
         defaultContext.Add(conn);
         defaultContext.Add(parkLayer);
         defaultContext.Add(wardLayer);
+
         defaultContext.Add(parkFeature);
         defaultContext.Add(placeFeature);
         defaultContext.Add(streetAddressFeature);
         defaultContext.Add(ratingUnitFeature);
+
         await defaultContext.SaveChangesAsync();
     }
 }

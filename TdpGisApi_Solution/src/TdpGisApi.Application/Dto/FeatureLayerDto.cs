@@ -1,11 +1,9 @@
-﻿namespace TdpGisApi.Application.Models;
+﻿using TdpGisApi.Application.Models.Core;
 
-public class QueryConfig
+namespace TdpGisApi.Application.Dto;
+
+public class FeatureLayerDto
 {
-    public required QueryType QueryType { get; set; }
-
-    public required string QueryField { get; set; }
-
     public Guid Id { get; set; }
 
     public required string Name { get; set; }
@@ -19,12 +17,6 @@ public class QueryConfig
     public string? Description { get; set; }
 
     public required List<PropertyOutput> Mappings { get; set; }
-
-    public required ConnectionObject Connection { get; set; }
-
     public GeometryType GeometryType { get; set; }
-
-    public required bool IsDisabled { get; set; }
-
-    public required ShowLevel ShowLevel { get; set; }
+    public Guid ConnectionId { get; set; }
 }
