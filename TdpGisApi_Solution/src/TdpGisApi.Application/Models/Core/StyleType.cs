@@ -2,7 +2,7 @@
 
 public enum StyleType
 {
-    Line,
-    Circle,
-    Fill
+    line,
+    circle,
+    fill
 }

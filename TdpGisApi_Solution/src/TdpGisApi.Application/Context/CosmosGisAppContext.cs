@@ -46,12 +46,9 @@ public class CosmosGisAppContext : GisAppContext
                 a.Property(x => x.ShowLevel).HasConversion(new EnumToStringConverter<ShowLevel>());
             });
 
-        var styleConverter = new ValueConverter<StyleType, string>(
-            v => v.ToString().ToLower(),
-            v => (StyleType)Enum.Parse(typeof(StyleType), v));
 
         modelBuilder.Entity<FeatureLayer>().OwnsOne(p => p.Style,
-            a => { a.Property(x => x.Type).HasConversion(styleConverter); }
+            a => { a.Property(x => x.Type).HasConversion(new EnumToStringConverter<StyleType>()); }
         );
 
 

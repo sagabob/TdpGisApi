@@ -128,7 +128,7 @@ public class DbService
             GeometryType = GeometryType.Polygon
         };
 
-        var parkStyleLayer = new StyleLayer(StyleType.Fill);
+        var parkStyleLayer = new StyleLayer(StyleType.fill);
         parkStyleLayer.AddPaintProperty("fill-color", "#ed800c");
         parkStyleLayer.AddPaintProperty("fill-outline-color", "#ed800c");
         parkStyleLayer.AddPaintProperty("fill-opacity", 0.8);
@@ -350,7 +350,7 @@ public class DbService
             ShowLevel = ShowLevel.Public
         };
 
-        var wardStyleLayer = new StyleLayer(StyleType.Line);
+        var wardStyleLayer = new StyleLayer(StyleType.line);
         wardStyleLayer.AddPaintProperty("line-color", "#4086f7");
         wardStyleLayer.AddPaintProperty("line-width", 1.5);
         wardStyleLayer.AddPaintProperty("line-opacity", 0.8);
