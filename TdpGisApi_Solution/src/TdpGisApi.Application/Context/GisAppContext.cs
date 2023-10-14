@@ -13,4 +13,6 @@ public class GisAppContext : DbContext
     public DbSet<ConnectionObject> AppConnections { get; set; } = null!;
 
     public DbSet<QueryConfig> AppFeatures { get; set; } = null!;
+
+    public DbSet<FeatureLayer> AppLayers { get; set; } = null!;
 }

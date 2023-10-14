@@ -1,11 +1,7 @@
 ﻿namespace TdpGisApi.Application.Models;
 
-public class QueryConfig
+public class FeatureLayer
 {
-    public required QueryType QueryType { get; set; }
-
-    public required string QueryField { get; set; }
-
     public Guid Id { get; set; }
 
     public required string Name { get; set; }

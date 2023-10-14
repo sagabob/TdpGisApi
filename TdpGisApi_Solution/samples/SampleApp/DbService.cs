@@ -118,6 +118,21 @@ public class DbService
             GeometryType = GeometryType.Polygon
         };
 
+        var parkLayer = new FeatureLayer
+        {
+            Id = new Guid(),
+            Name = "Parks",
+            DisplayName = "Parks",
+            CollectionName = "Parks",
+            PartitionKey = "Locality",
+            Description = "Parks in CC",
+            Connection = conn,
+            Mappings = new List<PropertyOutput> { park1, park2, park3, park4 },
+            IsDisabled = false,
+            ShowLevel = ShowLevel.Public,
+            GeometryType = GeometryType.Polygon
+        };
+
         var sta1 = new PropertyOutput
         {
             Id = new Guid(),
@@ -327,7 +342,7 @@ public class DbService
         };
 
 
-        var ward = new QueryConfig
+        var wardLayer = new FeatureLayer
         {
             Id = new Guid(),
             Name = "Wards",
@@ -336,15 +351,15 @@ public class DbService
             PartitionKey = "WardID",
             Description = "Wards in CC",
             Connection = conn,
-            QueryType = QueryType.Text,
-            QueryField = "WardNameDescription",
             Mappings = new List<PropertyOutput> { ward1, ward2, ward3 },
             IsDisabled = false,
             ShowLevel = ShowLevel.Public,
             GeometryType = GeometryType.Polygon
         };
+
         defaultContext.Add(conn);
-        defaultContext.Add(ward);
+        defaultContext.Add(parkLayer);
+        defaultContext.Add(wardLayer);
         defaultContext.Add(parkFeature);
         defaultContext.Add(placeFeature);
         defaultContext.Add(streetAddressFeature);

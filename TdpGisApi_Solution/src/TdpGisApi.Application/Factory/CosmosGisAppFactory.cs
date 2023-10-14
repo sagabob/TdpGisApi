@@ -37,12 +37,17 @@ public class CosmosGisAppFactory : IDbContextFactory<CosmosGisAppContext>, IGisA
         var connections = await context.AppConnections.AsNoTracking().ToListAsync();
         var features = await context.AppFeatures.ToListAsync();
 
+        var layers = await context.AppLayers.ToListAsync();
+
         foreach (var feature in features) await context.Entry(feature).Reference(x => x.Connection).LoadAsync();
+
+        foreach (var layer in layers) await context.Entry(layer).Reference(x => x.Connection).LoadAsync();
 
         return new AppFeatureData
         {
             Connections = connections,
-            Features = features
+            Features = features,
+            Layers = layers
         };
     }
 }
