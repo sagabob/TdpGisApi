@@ -46,6 +46,15 @@ public class CosmosGisAppContext : GisAppContext
                 a.Property(x => x.ShowLevel).HasConversion(new EnumToStringConverter<ShowLevel>());
             });
 
+        var styleConverter = new ValueConverter<StyleType, string>(
+            v => v.ToString().ToLower(),
+            v => (StyleType)Enum.Parse(typeof(StyleType), v));
+
+        modelBuilder.Entity<FeatureLayer>().OwnsOne(p => p.Style,
+            a => { a.Property(x => x.Type).HasConversion(styleConverter); }
+        );
+
+
         modelBuilder.Entity<QueryConfig>()
             .HasNoDiscriminator()
             .HasPartitionKey(x => x.ShowLevel)

@@ -19,4 +19,6 @@ public class FeatureLayerDto
     public required List<PropertyOutput> Mappings { get; set; }
     public GeometryType GeometryType { get; set; }
     public Guid ConnectionId { get; set; }
+
+    public required StyleLayer Style { get; set; }
 }

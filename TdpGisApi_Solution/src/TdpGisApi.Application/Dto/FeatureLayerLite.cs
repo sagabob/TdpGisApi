@@ -9,4 +9,6 @@ public class FeatureLayerLite
     public required string DisplayName { get; set; }
 
     public GeometryType GeometryType { get; set; }
+
+    public required StyleLayer Style { get; set; }
 }

@@ -19,6 +19,8 @@ public class FeatureLayer : IPropertyMapping
     public required bool IsDisabled { get; set; }
 
     public required ShowLevel ShowLevel { get; set; }
+
+    public required StyleLayer Style { get; set; }
     public Guid Id { get; set; }
 
     public required List<PropertyOutput> Mappings { get; set; }

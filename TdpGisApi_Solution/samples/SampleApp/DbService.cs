@@ -128,6 +128,12 @@ public class DbService
             GeometryType = GeometryType.Polygon
         };
 
+        var parkStyleLayer = new StyleLayer(StyleType.Fill);
+        parkStyleLayer.AddPaintProperty("fill-color", "#ed800c");
+        parkStyleLayer.AddPaintProperty("fill-outline-color", "#ed800c");
+        parkStyleLayer.AddPaintProperty("fill-opacity", 0.8);
+        parkStyleLayer.MinZoom = 11;
+
         var parkLayer = new FeatureLayer
         {
             Id = new Guid(),
@@ -140,7 +146,8 @@ public class DbService
             Mappings = new List<PropertyOutput> { idProperty, park1, park4 },
             IsDisabled = false,
             ShowLevel = ShowLevel.Public,
-            GeometryType = GeometryType.Polygon
+            GeometryType = GeometryType.Polygon,
+            Style = parkStyleLayer
         };
 
         var sta1 = new PropertyOutput
@@ -343,6 +350,11 @@ public class DbService
             ShowLevel = ShowLevel.Public
         };
 
+        var wardStyleLayer = new StyleLayer(StyleType.Line);
+        wardStyleLayer.AddPaintProperty("line-color", "#4086f7");
+        wardStyleLayer.AddPaintProperty("line-width", 1.5);
+        wardStyleLayer.AddPaintProperty("line-opacity", 0.8);
+        wardStyleLayer.MinZoom = 10;
 
         var wardLayer = new FeatureLayer
         {
@@ -356,7 +368,8 @@ public class DbService
             Mappings = new List<PropertyOutput> { idProperty, ward1, ward2 },
             IsDisabled = false,
             ShowLevel = ShowLevel.Public,
-            GeometryType = GeometryType.Polygon
+            GeometryType = GeometryType.Polygon,
+            Style = wardStyleLayer
         };
 
         defaultContext.Add(conn);
