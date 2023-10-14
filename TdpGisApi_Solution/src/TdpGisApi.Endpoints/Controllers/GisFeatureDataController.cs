@@ -43,6 +43,14 @@ public class GisFeatureDataController : ControllerBase
     }
 
 
+    [HttpGet]
+    [Route("getalllayerdata/{layer:Guid}")]
+    public async Task<IActionResult> GetAllLayerData(Guid layer)
+    {
+        var result = await _gisFeatureDataHandler.GetAllLayerData(layer);
+        return Ok(result);
+    }
+
     [HttpPost]
     [Route("allspatialdata/{feature:Guid}")]
     public async Task<IActionResult> GetAllSpatialData(Guid feature, [FromBody] string boundaries)
