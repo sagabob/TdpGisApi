@@ -10,9 +10,7 @@
   <h2 align="center">Tdp GIS API</h2>
 
   <p align="center">
-    Restful APIs provides text & spatial querying services for configured geospatial features
-    <br />  
-    <a href="https://tdp-gis-api.azurewebsites.net/swagger/index.html" target="_blank"><strong>Explore the api »</strong></a>   
+    Restful APIs provides text & spatial querying services for configured geospatial features    
 
   </p>
 </p>
